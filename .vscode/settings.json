@@ -2,6 +2,4 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "files.insertFinalNewline": true,
-  "typescript.validate.enable": false,
-  "javascript.validate.enable": false,
 }

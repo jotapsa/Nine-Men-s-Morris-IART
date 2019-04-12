@@ -19,6 +19,7 @@ GameView.render(game);
 prompt.question("What's your move? ", (move) => {
   console.log(`Received: ${move}`);
   gameController.input(move);
+  GameView.render(game);
   if (game.gameState === GameState.GAME_OVER) {
     prompt.close();
   }
