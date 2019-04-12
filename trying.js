@@ -1,3 +1,5 @@
+//Just run this as node trying.js
+//It's just to test random code.
 
 var rl = require("readline");
 var prompts = rl.createInterface(process.stdin, process.stdout);
