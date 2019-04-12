@@ -16,11 +16,10 @@ const gameController = new GameController(game);
 
 GameView.render(game);
 
-prompt.question("What's your move? ", (move) => {
-  console.log(`Received: ${move}`);
-  gameController.input(move);
+prompt.question("What's your move? e.g.: 3D\n", (input) => {
+  gameController.input(input);
   GameView.render(game);
   if (game.gameState === GameState.GAME_OVER) {
-    prompt.close();
+    prompt.exit();
   }
 });
