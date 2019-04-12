@@ -1,15 +1,26 @@
 //Just run this as node trying.js
 //It's just to test random code.
 
-var rl = require("readline");
-var prompts = rl.createInterface(process.stdin, process.stdout);
-prompts.question("How many glass of water do you drink each day?", function (glasses) {
-  var message = "";
-  if (glasses > 5) {
-    message = "Great! Water is the key of a healthy life.";
-  } else {
-    message = "Are you drinking just " + glasses + " glass of water? You should drink at least " + (6 - glasses) + " more.";
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: 'OHAI> '
+});
+
+rl.prompt();
+
+rl.on('line', (line) => {
+  switch (line.trim()) {
+    case 'hello':
+      console.log('world!');
+      break;
+    default:
+      console.log(`Say what? I might have heard '${line.trim()}'`);
+      break;
   }
-  console.log(message);
-  process.exit();
+  rl.prompt();
+}).on('close', () => {
+  console.log('Have a great day!');
+  process.exit(0);
 });
