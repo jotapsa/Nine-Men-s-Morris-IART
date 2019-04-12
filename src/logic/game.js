@@ -13,9 +13,10 @@ const Turn = Object.freeze({
 const GameState = Object.freeze({
   PLACING: Symbol('placing'),
   MOVING: Symbol('moving'),
+  GAME_OVER: Symbol('game_over'),
 });
 
-class GameModel {
+module.exports = class Game {
   constructor() {
     // eslint-disable-next-line max-len
     this.board = [
@@ -32,4 +33,4 @@ class GameModel {
 
     this.gameState = GameState.PLACING;
   }
-}
+};
