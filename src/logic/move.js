@@ -1,7 +1,14 @@
 module.exports = class Move {
-  constructor(moveType, endPos, startPos) {
-    this.moveType = moveType;
-    this.endPos = endPos;
-    this.startPos = startPos;
+  constructor(Y, X) {
+    this.Y = Y;
+    this.X = X;
+  }
+
+  getX() {
+    return this.X;
+  }
+
+  getY() {
+    return this.Y;
   }
 };

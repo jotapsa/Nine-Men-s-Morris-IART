@@ -1,7 +1,6 @@
 // eslint-disable-next-line max-len
 // TODO: when using a browser we need to use this layer to transform the event into something usable by the logic
 const Move = require('../logic/move.js');
-const { MoveType } = require('../utils/game_utils.js');
 
 module.exports = class GameController {
   constructor(model) {
@@ -9,10 +8,14 @@ module.exports = class GameController {
   }
 
   input(moveInput) {
-    console.log(`line - ${moveInput[0]}`);
-    console.log(`column - ${moveInput[1]}`);
+    // -1 for easier array manipulation.
+    const Y = moveInput.charCodeAt(0) - 48 - 1;
+    const X = moveInput.charCodeAt(1) - 48 - 16 - 1;
 
-    // TODO: convert to int -> create Move object -> validateMove using Model -> pass move to model
-    // const move = new Move(MoveType.PLACING, );
+    const move = new Move(Y, X);
+
+    // TODO: validateMove using Model before passing move to model
+
+    this.model.makeMove(move);
   }
 };
