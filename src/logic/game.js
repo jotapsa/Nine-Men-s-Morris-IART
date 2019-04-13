@@ -30,15 +30,23 @@ module.exports = class Game {
     return this.board;
   }
 
+  getGameState() {
+    return this.gameState;
+  }
+
+  getCurrentPlayer() {
+    return this.currentPlayer;
+  }
+
   makeMove(move) {
     console.log(move);
     const pos = move.getStartPos();
 
     switch (this.gameState) {
       case GameState.PLACING:
-        if (this.board.isEmptyPos(pos[0], pos[1])) {
-          this.board.setPos(pos[0], pos[1], this.currentPlayer.getCell());
-        }
+        // if (this.board.isEmptyPos(pos[0], pos[1])) {
+        //   this.board.setPos(pos[0], pos[1], this.currentPlayer.getCell());
+        // }
         break;
       case GameState.MOVING:
         break;

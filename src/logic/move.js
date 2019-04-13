@@ -1,5 +1,5 @@
 module.exports = class Move {
-  constructor(startPos = null, endPos = null, optionalPos = null) {
+  constructor(startPos, endPos = null, optionalPos = null) {
     this.startPos = startPos;
     this.endPos = endPos;
     this.optionalPos = optionalPos;

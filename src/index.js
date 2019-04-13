@@ -22,13 +22,13 @@ const gameController = new GameController(game);
 
 // console.log('\x1Bc');
 GameView.render(game);
-console.log("What's your move (e.g.: 3D) ? ");
+console.log("What's your move (e.g.: D3) ? ");
 r1.prompt();
 r1.on('line', (input) => {
   gameController.input(input.trim());
   // console.log('\x1Bc');
   GameView.render(game);
-  console.log("What's your move (e.g.: 3D) ? ");
+  console.log("What's your move (e.g.: D3) ? ");
   r1.prompt();
 });
 

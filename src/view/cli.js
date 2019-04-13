@@ -1,6 +1,7 @@
 const Game = require('../logic/game');
+const Position = require('../logic/position');
 // const Board = require('../logic/board.js');
-const { Cell } = require('../utils/game_utils.js');
+const { Cell } = require('../utils/game_utils');
 
 module.exports.cliView = {
   render(model) {
@@ -11,7 +12,7 @@ module.exports.cliView = {
       for (let i = 0; i < boardSize; i += 1) {
         boardString = boardString.concat(`${i + 1} - `);
         for (let j = 0; j < boardSize; j += 1) {
-          switch (board.getPos(i, j)) {
+          switch (board.getCell(new Position(j, i))) {
             case Cell.BLOCKED:
               boardString = boardString.concat('X');
               break;
