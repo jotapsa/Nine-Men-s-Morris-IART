@@ -1,23 +1,24 @@
-module.exports.Cell = Object.freeze({
+const Cell = Object.freeze({
   BLOCKED: Symbol('blocked'),
   OPEN: Symbol('open'),
-  RED: Symbol('red'),
-  BLUE: Symbol('blue'),
+  Player0: Symbol('player0'),
+  Player1: Symbol('player1'),
 });
 
-module.exports.Turn = Object.freeze({
-  RED: Symbol('red'),
-  BLUE: Symbol('blue'),
-});
-
-module.exports.GameState = Object.freeze({
+const GameState = Object.freeze({
   PLACING: Symbol('placing'),
   MOVING: Symbol('moving'),
   GAME_OVER: Symbol('game_over'),
 });
 
-module.exports.MoveType = Object.freeze({
+const MoveType = Object.freeze({
   PLACING: Symbol('placing'),
   MOVE_ORDINARY: Symbol('move'),
   MOVE_FREE: Symbol('move_free'),
 });
+
+module.exports = {
+  Cell,
+  GameState,
+  MoveType,
+};

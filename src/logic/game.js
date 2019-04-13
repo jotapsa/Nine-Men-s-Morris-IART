@@ -1,25 +1,48 @@
+const { getRandomInt } = require('../utils/utils.js');
+const Board = require('../logic/board.js');
 const Move = require('../logic/move.js');
-const { Cell, Turn, GameState } = require('../utils/game_utils.js');
+const { GameState } = require('../utils/game_utils.js');
+
 
 module.exports = class Game {
-  constructor() {
-    // eslint-disable-next-line max-len
-    this.board = [
-      [Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN],
-      [Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED],
-      [Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN, Cell.OPEN, Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED],
-      [Cell.OPEN, Cell.OPEN, Cell.OPEN, Cell.BLOCKED, Cell.OPEN, Cell.OPEN, Cell.OPEN],
-      [Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN, Cell.OPEN, Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED],
-      [Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED],
-      [Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN, Cell.BLOCKED, Cell.BLOCKED, Cell.OPEN],
-    ];
+  constructor(player0, player1) {
+    this.players = [player0, player1];
 
-    this.turn = Turn.RED;
+    this.reset();
+  }
+
+  reset() {
+    this.board = new Board();
+
+    this.currentPlayer = this.players[getRandomInt(2)];
+    this.turnNo = 0;
+
+    // There are three ways to tie a game
+    this.millCountdown = 50; // 50 moves without any mills created
+    this.flyingMillCountdown = 10; // 10 moves without any mills created, when both players only have 3 pieces
+    // The board is in the exact same configuration three times.
+    this.boardHistory = [];
 
     this.gameState = GameState.PLACING;
   }
 
+  getBoard() {
+    return this.board;
+  }
+
   makeMove(move) {
     console.log(move);
+
+    switch (this.gameState) {
+      case GameState.PLACING:
+        if (this.board.isEmptyPos(move.getY(), move.getX())) {
+          this.board.setPos(move.getY(), move.getX(), this.currentPlayer.getCell());
+        }
+        break;
+      case GameState.MOVING:
+        break;
+      default:
+        break;
+    }
   }
 };
