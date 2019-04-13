@@ -1,14 +1,21 @@
 module.exports = class Move {
-  constructor(Y, X) {
-    this.Y = Y;
-    this.X = X;
+  constructor(startPos = null, endPos = null, optionalPos = null) {
+    this.startPos = startPos;
+    this.endPos = endPos;
+    this.optionalPos = optionalPos;
   }
 
-  getX() {
-    return this.X;
+  getStartPos() {
+    return this.startPos;
   }
 
-  getY() {
-    return this.Y;
+  getEndPos() {
+    return this.endPos;
   }
+
+  getOptionalPos() {
+    return this.optionalPos;
+  }
+
+  // TODO: setters
 };
