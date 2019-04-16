@@ -1,6 +1,6 @@
 const readline = require('readline');
 
-const Game = require('./logic/game.js');
+const Game = require('./logic/gameState.js/index.js');
 const GameController = require('./controller/game-controller.js');
 const GameView = require('./view/cli.js').cliView;
 const { Cell } = require('./utils/game_utils.js');

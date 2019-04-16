@@ -16,6 +16,4 @@ module.exports = class Move {
   getOptionalPos() {
     return this.optionalPos;
   }
-
-  // TODO: setters
 };
