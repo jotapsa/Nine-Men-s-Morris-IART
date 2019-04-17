@@ -8,6 +8,9 @@ module.exports = class GameController {
   constructor(state) {
     this.state = state;
     this.currentMove = null;
+
+    this.waitingForEnd = false;
+    this.waitingForTaken = false;
   }
 
   input(input) {
@@ -18,36 +21,35 @@ module.exports = class GameController {
       return;
     }
 
+    if (!(this.state instanceof GameState)) {
+      return;
+    }
+
     if (this.currentMove === null) {
       this.currentMove = Move(input);
+      if (this.state.isInPlacingPhase()) {
+        if (this.state.checkIfMoveCausesMill(this.currentMove)) {
+          this.waitingForTaken = true;
+          return;
+        }
+      } else {
+        this.waitingForEnd = true;
+        return;
+      }
+    } else if (this.waitingForEnd) {
+      this.currentMove.end = moveInput;
+      if (this.state.checkIfMoveCausesMill(this.currentMove)) {
+        this.waitingForTaken = true;
+        return;
+      }
+    } else if (this.waitingForTaken) {
+      this.currentMove.taken = moveInput;
     }
-  }
-  // if (this.currentMove === null) {
-  //   this.currentMove = Move(moveInput);
 
-  //   //move.start = moveInput
-  //   if (/*state in placing phase*/) {
-  //     if (/*state.moveCausesMill(move)*/) {
-  //       //setWaitingForTaken
-  //       return; //pq precisamos da peça
-  //     } else {
-  //       //return move ou break?
-  //     }
-  //   } else if (/*state in moving phase*/) {
-  //     //setWaitingforTo
-  //     return; //pq precisamos do move.to
-  //   }
-  // } else if (/*WaitingForTo*/) {
-  //   //move.to = moveInput
-  //   if (/*state.moveCausesMill(move)*/) {
-  //     //setWaitingforTaken
-  //     return; //pq precisamos da peça
-  //   } else {
-  //     //return move ou break;
-  //   }
-  // } else if (/*WaitingForTaken*/) {
-  //   //move.taken = moveInput;
-  //   //return move ou break
-  // }
-  // do while !State.isValidmove(move))
+    if (this.state.isValidMove(this.currentMove)) {
+      this.state.executeMove(this.currentMove);
+    }
+
+    this.currentMove = null;
+  }
 };

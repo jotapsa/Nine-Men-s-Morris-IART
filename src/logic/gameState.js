@@ -139,8 +139,11 @@ module.exports = class Game {
     // else return false
   }
 
-  /* Assume move is validated */
+  isValidMove(move) {
+    return true;
+  }
 
+  /* Assume move is validated */
   makeMove(move) {
     console.log(move);
     if (move instanceof Move) {

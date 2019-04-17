@@ -4,7 +4,7 @@ const GameState = require('./logic/gameState');
 const GameController = require('./controller/game-controller');
 const GameView = require('./view/cli').cliView;
 const Player = require('./logic/player');
-const Computer = require('./logic/computer');
+// const Computer = require('./logic/computer');
 
 const player0 = new Player(0);
 const player1 = new Player(1);
