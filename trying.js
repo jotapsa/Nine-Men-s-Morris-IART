@@ -8,6 +8,8 @@ const rl = readline.createInterface({
   prompt: 'OHAI> '
 });
 
+
+console.log("What's your move (e.g.: D3) ? ");
 rl.prompt();
 
 rl.on('line', (line) => {
@@ -19,6 +21,7 @@ rl.on('line', (line) => {
       console.log(`Say what? I might have heard '${line.trim()}'`);
       break;
   }
+  console.log("What's your move (e.g.: D3) ? ");
   rl.prompt();
 }).on('close', () => {
   console.log('Have a great day!');
