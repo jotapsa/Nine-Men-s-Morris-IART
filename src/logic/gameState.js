@@ -1,7 +1,5 @@
 const { getRandomInt } = require('../utils/utils.js');
-const Board = require('../logic/board.js');
-const Move = require('./move.js');
-const { GameState } = require('../utils/game_utils.js');
+const Move = require('./move');
 
 const possibleMills = [
   [0, 1, 2],
@@ -22,25 +20,54 @@ const possibleMills = [
   [2, 14, 23],
 ];
 
+const neighbours = [
+  [1, 9],
+  [0, 2, 4],
+  [1, 14],
+  [4, 10],
+  [1, 3, 5, 7],
+  [4, 13],
+  [7, 11],
+  [4, 6, 8],
+  [7, 12],
+  [0, 10, 21],
+  [3, 9, 11, 18],
+  [6, 10, 15],
+  [8, 13, 17],
+  [5, 12, 14, 20],
+  [2, 13, 23],
+  [11, 16],
+  [15, 17, 19],
+  [12, 16],
+  [10, 19],
+  [16, 18, 20, 22],
+  [13, 19],
+  [9, 22],
+  [19, 21, 23],
+  [14, 22],
+];
+
 const nmovesForPlacing = 18;
 
-module.exports = class Game {
-  constructor(player0, player1) {
-    this.players = [player0, player1];
+const player1 = 1;
+const player2 = 2;
 
+module.exports = class Game {
+  constructor() {
     this.reset();
   }
 
   reset() {
     this.board = Array(24).fill(0);
+    this.currentPlayer = getRandomInt(2) + 1;
+    console.log(this.currentPlayer);
 
-    this.currentPlayer = this.players[getRandomInt(2)];
-    this.turnNo = 0;
+    this.noPieces = [9, 9];
 
-    // There are three ways to tie a game
-    this.millCountdown = 50; // 50 moves without any mills created
-    this.flyingMillCountdown = 10; // 10 moves without any mills created, when both players only have 3 pieces
-    // The board is in the exact same configuration three times.
+    this.nmoves = 0;
+
+    this.millCountdown = 50;
+    this.flyingMillCountdown = 10;
     this.boardHistory = [];
   }
 
@@ -56,28 +83,54 @@ module.exports = class Game {
     return this.currentPlayer;
   }
 
-  isGameOver() {
-    /* tie return 0 */
-    // 50 moves without mills (millcountdown)
-    // 10 moves where both players only have 3 pieces (flying)
-    // if the board repeats three times
+  nextTurn() {
+    this.currentPlayer = 3 - this.currentPlayer;
+  }
 
-    /* win return playerNumber */
-    // a player has no possible moves then he loses.
-    // a player loses if he is left with two pieces.
+  isGameOver() {
+    // If there are 50 moves without any mills the game ends in a tie.
+    // Else if there are 10 completed moves where both player only have 3 pieces.
+    // Else if the board repeats itself three times.
+    if (this.millCountdown === 0
+      || this.flyingMillCountdown === 0
+      || this.countBoardRepeats(this.board) === 2) {
+      return 0;
+    }
+
+    // If there are no possible moves then a player has lost.
+    // Else if a player is left with only two pieces he has lost.
+    if (getPossibleMoves().length === 0
+      || this.noPieces[this.currentPlayer - 1] <= 2) {
+      return 3 - this.currentPlayer;
+    }
 
     return -1;
+  }
+
+  countBoardRepeats(board) {
+    let nrepeats = 0;
+    this.boardHistory.forEach((oldBoard) => {
+      if (oldBoard === board) {
+        nrepeats += 1;
+      }
+    });
+    return nrepeats;
+  }
+
+  isInPlacingPhase() {
+    return this.nmoves < 18;
   }
 
   getPossibleMoves() {
     /* Placing phase */
     // existem 24 moves possiveis - aquelas que a sua posicao na board esta a 1
     // verificar se essa move causa um mill, caso sim incluir todas as peças que podem ser retiradas
-
     /* Moving phase */
     // procurar as peças na board
     // para cada peça ver os vizinhos e se as celulas destes estao a 0
     // verificar se essa move causa um mill, caso sim incluir todas as peças que podem ser retiradas.
+
+    return [];
   }
 
   checkIfMoveCausesMill(move) {
@@ -90,17 +143,18 @@ module.exports = class Game {
 
   makeMove(move) {
     console.log(move);
-    const pos = move.getStartPos();
+    if (move instanceof Move) {
+      if (move.end === null) {
+        this.board[move.start] = this.currentPlayer;
+      } else {
+        this.board[move.start] = 0;
+        this.board[move.end] = this.currentPlayer;
+      }
 
-    if (/* move.to == null */ true) {
-      // placing
-    } else {
-      // moving
-    }
-
-    if (/* move.taken != null */ true) {
-      // remove piece
-      // update piece counts
+      if (move.taken != null) {
+        this.board[move.taken] = 0;
+        this.noPieces[this.currentPlayer - 1] -= 1;
+      }
     }
   }
 };

@@ -1,38 +1,32 @@
+const readline = require('readline');
 
+const GameState = require('./logic/gameState');
+const GameController = require('./controller/game-controller');
+const GameView = require('./view/cli').cliView;
+const Player = require('./logic/player');
+const Computer = require('./logic/computer');
 
-// const Game = require('./logic/gameState');
-// const GameController = require('./controller/game-controller');
-// const GameView = require('./view/cli').cliView;
-// const { Cell } = require('./utils/game_utils');
-// const Player = require('./logic/player');
-// const Computer = require('./logic/computer');
+const player0 = new Player(0);
+const player1 = new Player(1);
+const state = new GameState(player0, player1);
+const controller = new GameController(state);
 
-// const { GameState } = require('./utils/game_utils');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: '> ',
+});
 
-// const r1 = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-//   prompt: '> ',
-// });
+GameView.render(state);
+console.log("What's your move (0-23) ? ");
+rl.prompt();
 
-// const player0 = new Player(Cell.Player0);
-// const player1 = new Player(Cell.Player1);
-// const game = new Game(player0, player1);
-// const gameController = new GameController(game);
-
-// // console.log('\x1Bc');
-// GameView.render(game);
-// console.log("What's your move (e.g.: D3) ? ");
-// r1.prompt();
-// r1.on('line', (input) => {
-//   gameController.input(input.trim());
-//   // console.log('\x1Bc');
-//   GameView.render(game);
-//   console.log("What's your move (e.g.: D3) ? ");
-//   r1.prompt();
-// });
-
-// r1.on('close', () => {
-//   console.log('Come again!');
-//   process.exit(0);
-// });
+rl.on('line', (input) => {
+  controller.input(input);
+  GameView.render(state);
+  console.log("What's your move (0-23) ? ");
+  rl.prompt();
+}).on('close', () => {
+  console.log('Come again!');
+  process.exit(0);
+});
