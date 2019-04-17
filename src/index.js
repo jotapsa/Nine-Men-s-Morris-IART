@@ -1,38 +1,32 @@
 const readline = require('readline');
 
-const Game = require('./logic/game.js');
-const GameController = require('./controller/game-controller.js');
-const GameView = require('./view/cli.js').cliView;
-const { Cell } = require('./utils/game_utils.js');
-const Player = require('./logic/player.js');
-const Computer = require('./logic/computer.js');
+const GameState = require('./logic/gameState');
+const GameController = require('./controller/game-controller');
+const GameView = require('./view/cli').cliView;
+const Player = require('./logic/player');
+const Computer = require('./logic/computer');
 
-const { GameState } = require('./utils/game_utils.js');
+const player0 = new Player(0);
+const player1 = new Player(1);
+const state = new GameState(player0, player1);
+const controller = new GameController(state);
 
-const r1 = readline.createInterface({
+const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
   prompt: '> ',
 });
 
-const player0 = new Player(Cell.Player0);
-const player1 = new Player(Cell.Player1);
-const game = new Game(player0, player1);
-const gameController = new GameController(game);
+GameView.render(state);
+console.log("What's your move (0-23) ? ");
+rl.prompt();
 
-// console.log('\x1Bc');
-GameView.render(game);
-console.log("What's your move (e.g.: D3) ? ");
-r1.prompt();
-r1.on('line', (input) => {
-  gameController.input(input.trim());
-  // console.log('\x1Bc');
-  GameView.render(game);
-  console.log("What's your move (e.g.: D3) ? ");
-  r1.prompt();
-});
-
-r1.on('close', () => {
+rl.on('line', (input) => {
+  controller.input(input);
+  GameView.render(state);
+  console.log("What's your move (0-23) ? ");
+  rl.prompt();
+}).on('close', () => {
   console.log('Come again!');
   process.exit(0);
 });

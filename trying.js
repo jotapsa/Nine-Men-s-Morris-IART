@@ -1,26 +1,19 @@
 //Just run this as node trying.js
 //It's just to test random code.
 
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  prompt: 'OHAI> '
-});
+const readline = require("readline");
 
-rl.prompt();
+readline.emitKeypressEvents(process.stdin);
+if (process.stdin.isTTY) {
+  process.stdin.setRawMode(true);
+}
 
-rl.on('line', (line) => {
-  switch (line.trim()) {
-    case 'hello':
-      console.log('world!');
-      break;
-    default:
-      console.log(`Say what? I might have heard '${line.trim()}'`);
-      break;
+process.stdin.addListener("keypress", (str, key) => {
+  console.log("str - ", str);
+  console.log("key - ", key);
+
+  if (key && key.ctrl && key.name === 'c') {
+    process.exit();
   }
-  rl.prompt();
-}).on('close', () => {
-  console.log('Have a great day!');
-  process.exit(0);
+
 });
