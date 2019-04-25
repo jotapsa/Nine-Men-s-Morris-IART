@@ -121,7 +121,45 @@ public class GameState {
     }
 
     public void doMove(Move move) {
-        
+        this.boardHistory.add(this.board);
+        this.nmoves++;
+
+        if(moveCausesMill(move)){
+            // A mill ocurred and a piece has to be removed
+            return;
+        }
+
+        this.currentPlayer = 3 - this.currentPlayer;
+
+        if(nmoves >= 18){
+            this.currentState = State.FLYING;
+        }
+        else{
+            this.currentState = State.PLACING;
+        }
+    }
+
+    public void doMoveMill(Move move){
+        this.boardHistory.add(this.board);
+
+        this.board.set(move.getTaken(), 0);
+        this.currentPlayer = 3 - this.currentPlayer;
+
+        if(nmoves >= 18){
+            this.currentState = State.FLYING;
+        }
+        else{
+            this.currentState = State.PLACING;
+        }
+    }
+
+    public boolean isValidTake(Move move) {
+        int opponent = 3 - this.currentPlayer;
+        if(this.board.get(move.getTaken()) == opponent){
+            return true;
+        }
+
+        return false;
     }
 
     public void drawState(){

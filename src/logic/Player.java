@@ -26,13 +26,17 @@ public class Player {
             }while(!gameState.isValidMove(move));
         }
 
+        gameState.doMove(move);
+
         if(gameState.moveCausesMill(move)){
+            gameState.drawState();
+
             //Get opponent piece
             do{
-                do{
-                    move.setTaken(Global.askInt("Remove Opponent Piece (0-23): ", 0, 23));
-                }while(!gameState.isValidMove(move));
-            }while(!gameState.isValidMove(move));
+                move.setTaken(Global.askInt("Remove Opponent Piece (0-23): ", 0, 23));
+            }while(!gameState.isValidTake(move));
+
+            gameState.doMoveMill(move);
         }
 
         return move;

@@ -1,9 +1,9 @@
 package logic;
 
 public class Move {
-    private int start;
-    private int end;
-    private int taken;
+    private int start = -1;
+    private int end = -1;
+    private int taken = -1;
 
     public Move(int startPos){
         this.start = startPos;
