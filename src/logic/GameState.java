@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class GameState {
     private static int boardSize = 24;
 
+    public enum State {
+        PLACING, FLYING
+    }
+
     private static Integer[][] neighbours = {
             {1, 9},
             {0, 2, 4},
@@ -54,12 +58,16 @@ public class GameState {
     private ArrayList<Integer> board;
     private int currentPlayer;
 
+    private State currentState;
+
     private int nmoves;
     private int millCountdown;
     private int flyingMillCountdown;
     private ArrayList<ArrayList<Integer>> boardHistory;
 
     public GameState(){
+        this.boardHistory = new ArrayList<>();
+
         this.board = new ArrayList<>();
         for(int i=0; i<boardSize; i++){
             this.board.add(0);
@@ -75,9 +83,23 @@ public class GameState {
 
         this.currentPlayer = 1;
         this.nmoves = 0;
+        this.currentState = State.PLACING;
         this.millCountdown = 50;
         this.flyingMillCountdown = 10;
         this.boardHistory.clear();
+    }
+
+    public State getCurrentState(){
+        return this.currentState;
+    }
+
+    public int getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+
+    public boolean moveCausesMill(Move move){
+
+        return false;
     }
 
 
@@ -91,6 +113,15 @@ public class GameState {
 //            return 0;
 //        }
         return false;
+    }
+
+    public boolean isValidMove(Move move){
+
+        return false;
+    }
+
+    public void doMove(Move move) {
+        
     }
 
     public void drawState(){

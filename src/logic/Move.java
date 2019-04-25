@@ -9,6 +9,14 @@ public class Move {
         this.start = startPos;
     }
 
+    public Move(int startPos, int endPos){
+        if(startPos == endPos){
+            return;
+        }
+        this.start = startPos;
+        this.end = endPos;
+    }
+
     public int getStart(){
         return this.start;
     }
@@ -19,5 +27,13 @@ public class Move {
 
     public int getTaken() {
         return taken;
+    }
+
+    public void setTaken(int takenPos) {
+        if(takenPos == this.start || takenPos == this.end){
+            return;
+        }
+
+        this.taken = taken;
     }
 }
