@@ -1,7 +1,7 @@
 import logic.GameState;
 import logic.Player;
 
-public class Main {
+final class Main {
 
     public static void main(String[] args) {
 
@@ -11,19 +11,19 @@ public class Main {
         Player player2 = new Player(2);
 
         do{
-            gameState.drawState();
+            GameView.render(gameState);
 
             switch(gameState.getCurrentPlayer()){
                 case 1:
                     gameState.doMove(player1.getMove(gameState));
                     break;
                 case 2:
+                    gameState.doMove(player2.getMove(gameState));
                     break;
                 default:
                         break;
             }
 
-            gameState.drawState();
         } while(!gameState.isGameOver());
 
 

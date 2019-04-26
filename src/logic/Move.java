@@ -34,6 +34,6 @@ public class Move {
             return;
         }
 
-        this.taken = taken;
+        this.taken = takenPos;
     }
 }

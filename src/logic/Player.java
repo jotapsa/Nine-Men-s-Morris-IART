@@ -12,6 +12,8 @@ public class Player {
     public Move getMove(GameState gameState){
         Move move = null;
 
+        System.out.println("\nPlayer " + number + " - It's your turn !");
+
         if(gameState.getCurrentState() == GameState.State.PLACING){
             //Get placing coordinates
             do{
@@ -26,17 +28,13 @@ public class Player {
             }while(!gameState.isValidMove(move));
         }
 
-        gameState.doMove(move);
 
         if(gameState.moveCausesMill(move)){
-            gameState.drawState();
-
             //Get opponent piece
             do{
                 move.setTaken(Global.askInt("Remove Opponent Piece (0-23): ", 0, 23));
             }while(!gameState.isValidTake(move));
 
-            gameState.doMoveMill(move);
         }
 
         return move;

@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameState {
     private static int boardSize = 24;
@@ -93,13 +94,12 @@ public class GameState {
         return this.currentState;
     }
 
-    public int getCurrentPlayer(){
-        return this.currentPlayer;
+    public int getPos(int pos){
+        return this.board.get(pos);
     }
 
-    public boolean moveCausesMill(Move move){
-
-        return false;
+    public int getCurrentPlayer(){
+        return this.currentPlayer;
     }
 
 
@@ -107,29 +107,109 @@ public class GameState {
         // If there are 50 moves without any mills the game ends in a tie.
         // Else if there are 10 completed moves where both player only have 3 pieces.
         // Else if the board repeats itself three times.
-//        if (this.millCountdown === 0
-//                || this.flyingMillCountdown === 0
-//                || this.countBoardRepeats(this.board) === 2) {
-//            return 0;
-//        }
+        if (this.millCountdown == 0
+                || this.flyingMillCountdown == 0
+                || this.countBoardRepeats(this.board) == 3) {
+            return true;
+        }
+        return false;
+    }
+
+    private int countBoardRepeats(ArrayList<Integer> board) {
+        int n=0;
+
+        for(ArrayList<Integer> historyBoard : this.boardHistory){
+            if(historyBoard.equals(board)){
+                n++;
+            }
+        }
+
+        return n;
+    }
+
+    private int countBoardPieces(ArrayList<Integer> board) {
+        int n=0;
+
+        for(int cell : board){
+            if(cell != 0){
+                n++;
+            }
+        }
+
+        return n;
+    }
+
+    public boolean moveCausesMill(Move move){
+        ArrayList<Integer> moveBoard = ( ArrayList<Integer> ) this.board.clone();
+        int movePos = -1;
+
+        if(this.currentState == State.PLACING){
+            moveBoard.set(move.getStart(), this.currentPlayer);
+
+            movePos = move.getStart();
+        }
+        else if(this.currentState == State.FLYING){
+            moveBoard.set(move.getStart(), 0);
+            moveBoard.set(move.getEnd(), this.currentPlayer);
+
+            movePos = move.getEnd();
+        }
+
+        for(Integer[] mill : this.possibleMills){
+            ArrayList<Integer> possibleMill = new ArrayList<>(Arrays.asList(mill));
+
+            if(possibleMill.contains(movePos)){
+                if( moveBoard.get(mill[0]) == this.currentPlayer &&
+                        moveBoard.get(mill[1]) == this.currentPlayer &&
+                        moveBoard.get(mill[2]) == this.currentPlayer){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
     public boolean isValidMove(Move move){
 
+        if(this.currentState == State.PLACING){
+            if(this.board.get(move.getStart()) == 0){
+                return true;
+            }
+        }
+        else if(this.currentState == State.FLYING){
+            if(this.board.get(move.getStart()) == this.currentPlayer && this.board.get(move.getEnd()) == 0){
+                for(Integer neighbour : this.neighbours[move.getStart()]){
+                        if(move.getEnd() == neighbour){
+                            return true;
+                        }
+                }
+            }
+        }
+
         return false;
     }
 
     public void doMove(Move move) {
-        this.boardHistory.add(this.board);
+        this.boardHistory.add((( ArrayList<Integer> ) this.board.clone()));
         this.nmoves++;
 
-        if(moveCausesMill(move)){
-            // A mill ocurred and a piece has to be removed
-            return;
+        if(this.currentState == State.PLACING){
+            this.board.set(move.getStart(), this.currentPlayer);
+        }
+        else if(this.currentState == State.FLYING){
+            this.board.set(move.getStart(), 0);
+            this.board.set(move.getEnd(), this.currentPlayer);
         }
 
-        this.currentPlayer = 3 - this.currentPlayer;
+        if(move.getTaken() != -1){
+            this.board.set(move.getTaken(), 0);
+            this.millCountdown = 50;
+        }
+
+        if(countBoardPieces(this.board) == 6){
+            this.flyingMillCountdown--;
+        }
 
         if(nmoves >= 18){
             this.currentState = State.FLYING;
@@ -137,20 +217,8 @@ public class GameState {
         else{
             this.currentState = State.PLACING;
         }
-    }
 
-    public void doMoveMill(Move move){
-        this.boardHistory.add(this.board);
-
-        this.board.set(move.getTaken(), 0);
         this.currentPlayer = 3 - this.currentPlayer;
-
-        if(nmoves >= 18){
-            this.currentState = State.FLYING;
-        }
-        else{
-            this.currentState = State.PLACING;
-        }
     }
 
     public boolean isValidTake(Move move) {
@@ -160,9 +228,5 @@ public class GameState {
         }
 
         return false;
-    }
-
-    public void drawState(){
-
     }
 }
