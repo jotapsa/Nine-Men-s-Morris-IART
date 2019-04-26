@@ -3,7 +3,7 @@ package logic;
 import utilities.Global;
 
 public class Player {
-    private int number;
+    protected int number;
 
     public Player(int number){
         this.number = number;
@@ -13,6 +13,7 @@ public class Player {
         Move move = null;
 
         System.out.println("\nPlayer " + number + " - It's your turn !");
+        System.out.println("Hint -> 24");
 
         if(gameState.getCurrentState() == GameState.State.PLACING){
             //Get placing coordinates
@@ -20,7 +21,7 @@ public class Player {
                 move = new Move(Global.askInt("Placing (0-23): ", 0, 23));
             }while(!gameState.isValidMove(move));
         }
-        else if(gameState.getCurrentState() == GameState.State.FLYING){
+        else if(gameState.getCurrentState() == GameState.State.MOVING){
             //Get Start and End coordinates
             do{
                 move = new Move(Global.askInt("Moving (0-23): ", 0, 23),

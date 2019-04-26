@@ -1,5 +1,6 @@
 package utilities;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Global {
@@ -10,8 +11,13 @@ public class Global {
         int i=0;
 
         do{
-            System.out.println(description);
-            i = s.nextInt();
+            try{
+                System.out.println(description);
+                i = s.nextInt();
+            }
+            catch (NoSuchElementException e){
+                System.exit(-1);
+            }
         }while(i < min || i > max);
 
         return i;

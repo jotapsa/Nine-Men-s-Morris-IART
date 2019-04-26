@@ -17,6 +17,15 @@ public class Move {
         this.end = endPos;
     }
 
+    public Move(int startPos, int endPos, int takenPos){
+        if(startPos == endPos || takenPos == this.start || takenPos == this.end){
+            return;
+        }
+        this.start = startPos;
+        this.end = endPos;
+        this.taken = takenPos;
+    }
+
     public int getStart(){
         return this.start;
     }
