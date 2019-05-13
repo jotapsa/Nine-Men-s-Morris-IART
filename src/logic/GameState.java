@@ -211,6 +211,11 @@ public class GameState {
         return possibleMoves;
     }
 
+    /*
+     * Returns 0 if game is a draw
+     * Returns 1 or 2 corresponding to victorious player if a player has won the game.
+     * Returns -1 if game is not finished
+     */
     public int isGameOver() {
         // If there are 50 moves without any mills the game ends in a tie.
         // Else if there are 10 completed moves where both player only have 3 pieces.

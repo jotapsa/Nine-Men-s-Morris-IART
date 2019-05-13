@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.function.Function;
 
 public class Computer extends Player {
@@ -8,6 +9,8 @@ public class Computer extends Player {
     private int depth;
     private final Function<GameState, Integer> evaluateFunction;
 
+    private final static int pointsWon = 50000;
+    
     public Computer(int number, int depth) {
         super(number);
 
@@ -102,8 +105,54 @@ public class Computer extends Player {
 
 
     public static int fav1 (GameState gameState) {
-        return 1;
+    	int value=0;
+    	
+    	value += evaluateNumberOfPieces(gameState);
+    	value += evaluatePiecesPosition(gameState);
+    	value += evaluateGameOver(gameState);
+    	value += randomComponent();
+    	
+        return value;
     }
+    
+	private static int evaluateNumberOfPieces(GameState gameState) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-    public static int fav2 (GameState gameState) { return 2; }
+	private static int evaluatePiecesPosition(GameState gameState) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int evaluateGameOver (GameState gameState) {
+    	int value=0;
+		switch (gameState.isGameOver()){
+			case 1:
+				value += pointsWon;
+				break;
+			case 2:
+				value -= pointsWon;
+				break;
+			case 0: //draw
+				value = 0;
+				break;
+			default:
+				break;
+		}
+		
+		return value;
+	}
+
+	/*
+     * Generate random number between 1 and 10.
+     */
+    private static int randomComponent() {
+    	Random generator = new Random(); 
+    	int value = generator.nextInt(10) + 1; 
+    	
+    	return value;
+	}
+
+	public static int fav2 (GameState gameState) { return 2; }
 }

@@ -5,6 +5,11 @@ import utilities.Global;
 
 final class Main {
 
+	private final static int maximizerPlayer = 1;
+	private final static int minimizerPlayer = 2;
+	private final static int pc1Depth = 5;
+	private final static int pc2Depth = 5;
+	
     public static void main(String[] args) {
         int answer = 0;
 
@@ -14,13 +19,13 @@ final class Main {
 
             switch (answer){
                 case 1:
-                    newGame(new Player(1), new Computer(2, 5));
+                    newGame(new Player(maximizerPlayer), new Computer(minimizerPlayer, pc2Depth));
                     break;
                 case 2:
-                    newGame(new Player(1), new Player(2));
+                    newGame(new Player(maximizerPlayer), new Player(minimizerPlayer));
                     break;
                 case 3:
-                    newGame(new Computer(2, 5), new Computer(2, 5));
+                    newGame(new Computer(maximizerPlayer, pc1Depth), new Computer(minimizerPlayer, pc2Depth));
                     break;
                 case 4:
                     printAbout();
