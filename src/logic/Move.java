@@ -45,4 +45,13 @@ public class Move {
 
         this.taken = takenPos;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "start=" + start +
+                ", end=" + end +
+                ", taken=" + taken +
+                '}';
+    }
 }

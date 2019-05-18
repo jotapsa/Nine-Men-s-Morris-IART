@@ -77,10 +77,10 @@ final class Main {
             GameView.render(gameState);
 
             switch(gameState.getCurrentPlayer()){
-                case 1:
+                case Global.maximizerPlayer:
                     gameState.doMove(player1.getMove(gameState));
                     break;
-                case 2:
+                case Global.minimizerPlayer:
                     gameState.doMove(player2.getMove(gameState));
                     break;
                 default:
@@ -88,7 +88,6 @@ final class Main {
             }
 
             printBoardStats(gameState);
-            Global.promptEnterKey();
         } while(gameState.isGameOver() == -1);
 
         return gameState;

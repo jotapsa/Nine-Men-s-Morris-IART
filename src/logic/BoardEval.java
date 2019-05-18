@@ -39,6 +39,7 @@ public class BoardEval {
         int value=0;
         int maximizerMoves, minimizerMoves;
         GameState gameStateOtherTurn = new GameState(gameState);
+        gameStateOtherTurn.changeTurn();
         switch(gameState.getCurrentPlayer()){
             case 1:
                 maximizerMoves = gameState.getPossibleMoves().size();
@@ -79,12 +80,10 @@ public class BoardEval {
     }
 
     /*
-     * Generate random number between 1 and 10.
+     * Generate random number between -10 and 10.
      */
-    public static int randomComponent() {
+    private static int randomComponent() {
         Random generator = new Random();
-        int value = generator.nextInt(10) + 1;
-
-        return value;
+        return generator.nextInt(21) -10;
     }
 }

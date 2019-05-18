@@ -165,40 +165,57 @@ public class GameState {
 
         switch(this.currentState){
             case PLACING:
-                for(int c=0; c < boardSize; c++){
-                    if(this.board.get(c) == 0){
-                        possibleMoves.add(new Move(c));
+                for(int s=0; s < boardSize; s++){
+                    if(this.board.get(s) == 0){
+                        if(this.moveCausesMill(new Move(s))){
+                            for(int t=0; t < boardSize; t++){
+                                if(this.board.get(t) == 3 - this.currentPlayer){
+                                    Move tempMove = new Move(s);
+                                    tempMove.setTaken(t);
+                                    possibleMoves.add(tempMove);
+                                }
+                            }
+                        } else{
+                            possibleMoves.add(new Move(s));
+                        }
+
                     }
                 }
                 break;
             case MOVING:
-                for(int c=0; c < boardSize; c++){
-                    if(this.board.get(c) == this.currentPlayer){
-                        for(int neighbour : this.neighbours[c]){
-                            if(this.board.get(neighbour) == 0 ){
-                                if(this.moveCausesMill(new Move(c, neighbour))){
+                for(int s=0; s < boardSize; s++){
+                    if(this.board.get(s) == this.currentPlayer){
+                        for(int e : neighbours[s]){
+                            if(this.board.get(e) == 0 ){
+                                if(this.moveCausesMill(new Move(s, e))){
                                     for(int t=0; t < boardSize; t++){
                                         if(this.board.get(t) == 3 - this.currentPlayer){
-                                            possibleMoves.add(new Move(c, neighbour, t));
+                                            possibleMoves.add(new Move(s, e, t));
                                         }
                                     }
                                 }
                                 else{
-                                    possibleMoves.add(new Move(c, neighbour));
+                                    possibleMoves.add(new Move(s, e));
                                 }
                             }
                         }
-
-                        possibleMoves.add(new Move(c));
                     }
                 }
                 break;
             case FLYING:
-                for(int c=0; c < boardSize; c++){
-                    if(this.board.get(c) == this.currentPlayer){
-                        for(int t=0; t < boardSize; t++){
-                            if(this.board.get(t) == 0){
-                                possibleMoves.add(new Move(c, t));
+                for(int s=0; s < boardSize; s++){
+                    if(this.board.get(s) == this.currentPlayer){
+                        for(int e=0; e < boardSize; e++){
+                            if(this.board.get(e) == 0){
+                                if(this.moveCausesMill(new Move(s, e))){
+                                    for(int t=0; t < boardSize; t++){
+                                        if(this.board.get(t) == 3 - this.currentPlayer){
+                                            possibleMoves.add(new Move(s, e, t));
+                                        }
+                                    }
+                                } else{
+                                    possibleMoves.add(new Move(s, e));
+                                }
                             }
                         }
                     }

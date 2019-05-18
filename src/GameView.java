@@ -50,6 +50,8 @@ public class GameView {
                 posToChar.get(gameState.getPos(21)),
                 posToChar.get(gameState.getPos(22)),
                 posToChar.get(gameState.getPos(23)));
+
+        System.out.println("Last move - " + gameState.getLastMove());
     }
 
     public static HashMap<Integer, Character> posToChar = new HashMap<>();

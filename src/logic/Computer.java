@@ -19,7 +19,7 @@ public class Computer extends Player {
 
     @Override
     public Move getMove(GameState gameState) {
-        System.out.println("Computer " + this.number + " : Playing...\n");
+        System.out.println("\nComputer " + this.number + " : Playing...\n");
         return alphaBetaAux(gameState);
     }
 
