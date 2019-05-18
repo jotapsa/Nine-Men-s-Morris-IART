@@ -9,7 +9,7 @@ final class Main {
 	private final static int minimizerPlayer = 2;
 	private final static int pc1Depth = 5;
 	private final static int pc2Depth = 5;
-	
+
     public static void main(String[] args) {
         int answer = 0;
 
@@ -39,21 +39,6 @@ final class Main {
     private static void printAbout() {
         System.out.println("\n\n---- About ----");
 
-//        System.out.println("Connect Four is a two-player connection game ");
-//        System.out.println("in which the players first choose a color and");
-//        System.out.println("then take turns dropping one colored disc ");
-//        System.out.println("from the top into a seven-column, six-row ");
-//        System.out.println("vertically suspended grid. ");
-//        System.out.println();
-//        System.out.println("The pieces fall straight down, occupying the ");
-//        System.out.println("lowest available space within the column. ");
-//        System.out.println("The objective of the game is to be the first ");
-//        System.out.println("to form a horizontal, vertical, or diagonal ");
-//        System.out.println("line of four of one's own discs.");
-//        System.out.println();
-//        System.out.println("The first player can always win by playing ");
-//        System.out.println("the right moves.");
-
         System.out.println();
 
         System.out.println("Bernardo Manuel Costa Barbosa - up201503477");
@@ -76,7 +61,7 @@ final class Main {
         System.out.println("5 - Exit");
     }
 
-    public static GameState newGame(Player player1, Player player2){
+    private static GameState newGame(Player player1, Player player2){
         GameState gameState = new GameState();
 
         do{

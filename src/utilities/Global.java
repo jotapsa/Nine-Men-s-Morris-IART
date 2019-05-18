@@ -12,7 +12,7 @@ public class Global {
 
         do{
             try{
-                System.out.println(description);
+                System.out.print(description);
                 i = s.nextInt();
             }
             catch (NoSuchElementException e){

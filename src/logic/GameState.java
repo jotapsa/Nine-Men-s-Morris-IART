@@ -160,7 +160,7 @@ public class GameState {
         return possibleBoards;
     }
 
-    private ArrayList<Move> getPossibleMoves() {
+    public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
         switch(this.currentState){
@@ -245,7 +245,7 @@ public class GameState {
         return n;
     }
 
-    private int countBoardPieces(ArrayList<Integer> board, int player) {
+    public int countBoardPieces(ArrayList<Integer> board, int player) {
         int n=0;
 
         for(int cell : board){
@@ -338,7 +338,7 @@ public class GameState {
             this.flyingMillCountdown--;
         }
 
-        this.currentPlayer = 3 - this.currentPlayer;
+        changeTurn();
         this.lastMove = move;
 
         if(nmoves >= 18 && this.countBoardPieces(this.board, this.currentPlayer) == 3){
@@ -347,6 +347,10 @@ public class GameState {
         else if(nmoves >= 18){
             this.currentState = State.MOVING;
         }
+    }
+
+    public void changeTurn(){
+        this.currentPlayer = 3 - this.currentPlayer;
     }
 
     public boolean isValidTake(Move move) {
