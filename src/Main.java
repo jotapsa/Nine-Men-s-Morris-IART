@@ -1,12 +1,13 @@
 import logic.Computer;
 import logic.GameState;
 import logic.Player;
+import logic.BoardEval;
 import utilities.Global;
 
 final class Main {
 
-	private final static int maximizerPlayer = 1;
-	private final static int minimizerPlayer = 2;
+	public final static int maximizerPlayer = 1;
+	public final static int minimizerPlayer = 2;
 	private final static int pc1Depth = 5;
 	private final static int pc2Depth = 5;
 
@@ -19,13 +20,14 @@ final class Main {
 
             switch (answer){
                 case 1:
-                    newGame(new Player(maximizerPlayer), new Computer(minimizerPlayer, pc2Depth));
+                    //newGame(new Player(maximizerPlayer), new Computer(minimizerPlayer, pc2Depth));
+                    newGame(new Computer(maximizerPlayer, pc1Depth, BoardEval::fav1), new Player(minimizerPlayer));
                     break;
                 case 2:
                     newGame(new Player(maximizerPlayer), new Player(minimizerPlayer));
                     break;
                 case 3:
-                    newGame(new Computer(maximizerPlayer, pc1Depth), new Computer(minimizerPlayer, pc2Depth));
+                    newGame(new Computer(maximizerPlayer, pc1Depth, BoardEval::fav1), new Computer(minimizerPlayer, pc2Depth, BoardEval::fav1));
                     break;
                 case 4:
                     printAbout();
@@ -61,6 +63,13 @@ final class Main {
         System.out.println("5 - Exit");
     }
 
+    private static void printBoardStats(GameState gameState) {
+        System.out.println("\n---- Board Stats ----");
+        System.out.println("evaluateNumberOfPieces - " + BoardEval.evaluateNumberOfPieces(gameState));
+        System.out.println("evaluatePossibleMoves - " + BoardEval.evaluatePossibleMoves(gameState));
+        System.out.println("evaluateGameOver - " + BoardEval.evaluateGameOver(gameState));
+    }
+
     private static GameState newGame(Player player1, Player player2){
         GameState gameState = new GameState();
 
@@ -78,6 +87,8 @@ final class Main {
                     break;
             }
 
+            printBoardStats(gameState);
+            Global.promptEnterKey();
         } while(gameState.isGameOver() == -1);
 
         return gameState;

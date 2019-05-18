@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class Global {
 
+    public final static int maximizerPlayer = 1;
+    public final static int minimizerPlayer = 2;
+
     private static Scanner s = new Scanner(System.in);
 
     public static int askInt(String description, int min, int max){
@@ -21,5 +24,11 @@ public class Global {
         }while(i < min || i > max);
 
         return i;
+    }
+
+    public static void promptEnterKey(){
+        System.out.println("Press \"ENTER\" to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }

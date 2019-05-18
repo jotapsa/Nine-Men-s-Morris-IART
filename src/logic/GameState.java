@@ -6,8 +6,8 @@ import java.util.Arrays;
 public class GameState {
     private static int boardSize = 24;
 
-    public static final int PLAYER_1 = 1;
-    public static final int PLAYER_2 = 2;
+    private static final int PLAYER_1 = 1;
+    private static final int PLAYER_2 = 2;
 
     public enum State {
         PLACING, MOVING, FLYING
