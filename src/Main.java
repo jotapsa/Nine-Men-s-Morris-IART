@@ -8,6 +8,8 @@ final class Main {
 
 	public final static int maximizerPlayer = 1;
 	public final static int minimizerPlayer = 2;
+	private final static int pc1PlacingDepth = 3;
+    private final static int pc2PlacingDepth = 3;
 	private final static int pc1Depth = 5;
 	private final static int pc2Depth = 5;
 
@@ -20,14 +22,22 @@ final class Main {
 
             switch (answer){
                 case 1:
-                    //newGame(new Player(maximizerPlayer), new Computer(minimizerPlayer, pc2Depth));
-                    newGame(new Computer(maximizerPlayer, pc1Depth, BoardEval::fav1), new Player(minimizerPlayer));
+                    newGame(
+                            new Computer(maximizerPlayer, pc1PlacingDepth, pc1Depth, BoardEval::fav1),
+                            new Player(minimizerPlayer)
+                    );
                     break;
                 case 2:
-                    newGame(new Player(maximizerPlayer), new Player(minimizerPlayer));
+                    newGame(
+                            new Player(maximizerPlayer),
+                            new Player(minimizerPlayer)
+                    );
                     break;
                 case 3:
-                    newGame(new Computer(maximizerPlayer, pc1Depth, BoardEval::fav1), new Computer(minimizerPlayer, pc2Depth, BoardEval::fav1));
+                    newGame(
+                            new Computer(maximizerPlayer, pc1PlacingDepth, pc1Depth, BoardEval::fav1),
+                            new Computer(minimizerPlayer, pc2PlacingDepth, pc2Depth, BoardEval::fav1)
+                    );
                     break;
                 case 4:
                     printAbout();

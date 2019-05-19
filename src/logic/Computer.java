@@ -7,12 +7,14 @@ import java.util.function.Function;
 
 public class Computer extends Player {
 
+    private int placingDepth;
     private int depth;
     private final Function<GameState, Integer> evaluateFunction;
 
-    public Computer(int number, int depth, Function<GameState, Integer> evaluateFunction) {
+    public Computer(int number, int placingDepth, int depth, Function<GameState, Integer> evaluateFunction) {
         super(number);
 
+        this.placingDepth = placingDepth;
         this.depth = depth;
         this.evaluateFunction = evaluateFunction;
     }
@@ -62,13 +64,22 @@ public class Computer extends Player {
 
     private Move alphaBetaAux(GameState gameState){
         ArrayList<GameState> possibleStates = gameState.getPossibleBoards();
+        int depth;
+        switch (gameState.getCurrentState()){
+            case PLACING:
+                depth = this.placingDepth;
+                break;
+            default:
+                depth = this.depth;
+                break;
+        }
 
         GameState bestState = possibleStates.get(0);
 
         for(int i=1; i<possibleStates.size(); i++){
             int bestStateValue = alphaBeta(
                     bestState,
-                    this.depth,
+                    depth,
                     java.lang.Integer.MIN_VALUE,
                     Integer.MAX_VALUE,
                     bestState.getCurrentPlayer() == Global.maximizerPlayer
@@ -76,7 +87,7 @@ public class Computer extends Player {
 
             int compareStateValue = alphaBeta(
                     possibleStates.get(i),
-                    this.depth,
+                    depth,
                     java.lang.Integer.MIN_VALUE,
                     Integer.MAX_VALUE,
                     possibleStates.get(i).getCurrentPlayer() == Global.maximizerPlayer

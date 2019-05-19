@@ -13,7 +13,7 @@ public class GameState {
         PLACING, MOVING, FLYING
     }
 
-    private static Integer[][] neighbours = {
+    public static Integer[][] neighbours = {
             {1, 9},
             {0, 2, 4},
             {1, 14},
