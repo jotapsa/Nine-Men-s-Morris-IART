@@ -3,7 +3,6 @@ package logic;
 import utilities.Global;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 public class BoardEval {
@@ -12,7 +11,9 @@ public class BoardEval {
     private final static int drawPoints = 10000;
     private final static int piecePoints = 1000;
     private final static int placementPoints = 50;
-    private final static int movePoints = 200;
+    private final static int possibleMills = 250;
+    private final static int movePoints = 500;
+    private final static int openMovePoints = 250;
 
 
     public static int fav1 (GameState gameState) {
@@ -20,13 +21,54 @@ public class BoardEval {
 
         if(gameState.getCurrentState().equals(GameState.State.PLACING)){
             value += evaluatePiecePlacement(gameState);
+            //value += evaluatePossibleMovesDuringPlacing(gameState);
+
         } else{
             value += evaluatePossibleMoves(gameState);
         }
 
+        value += evaluatePossibleMills(gameState);
         value += evaluateNumberOfPieces(gameState);
         value += evaluateGameOver(gameState);
         value += randomComponent();
+
+
+        return value;
+    }
+
+    private static int evaluatePossibleMovesDuringPlacing(GameState gameState) {
+        int value=0;
+        ArrayList<Integer> board = gameState.getBoard();
+
+        for(int s=0; s < board.size(); s++){
+            switch(board.get(s)){
+                case Global.maximizerPlayer:
+                    for(int e : GameState.neighbours[s]){
+                       if(board.get(e) == 0){
+                           value += 1;
+                       }
+                    }
+                    break;
+                case Global.minimizerPlayer:
+                    for(int e : GameState.neighbours[s]){
+                        if(board.get(e) == 0){
+                            value -= 1;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return value * openMovePoints;
+    }
+
+    private static int evaluatePossibleMills(GameState gameState) {
+        int value;
+
+        value = possibleMills* (gameState.getPossibleMillsForPlayer(Global.maximizerPlayer) -
+                        gameState.getPossibleMillsForPlayer(Global.minimizerPlayer));
 
         return value;
     }

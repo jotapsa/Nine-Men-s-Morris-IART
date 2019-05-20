@@ -9,10 +9,11 @@ public class GameState {
     private static final int PLAYER_1 = 1;
     private static final int PLAYER_2 = 2;
 
-    public enum State {
-        PLACING, MOVING, FLYING
-    }
 
+
+    public enum State {
+        PLACING, MOVING, FLYING;
+    }
     public static Integer[][] neighbours = {
             {1, 9},
             {0, 2, 4},
@@ -60,15 +61,15 @@ public class GameState {
     };
 
     private ArrayList<Integer> board;
-    private int currentPlayer;
 
+    private int currentPlayer;
     private State currentState;
 
     private int nmoves;
+
     private int millCountdown;
     private int flyingMillCountdown;
     private ArrayList<ArrayList<Integer>> boardHistory;
-
     private Move lastMove;
 
     public GameState(){
@@ -226,6 +227,27 @@ public class GameState {
         }
 
         return possibleMoves;
+    }
+
+    public int getPossibleMillsForPlayer(int player) {
+        int result=0;
+        boolean flag=true;
+
+        for (Integer[] possibleMill : possibleMills) {
+            flag = true;
+            for (Integer integer : possibleMill) {
+                if (board.get(integer) != player) {
+                    flag=false;
+                    break;
+                }
+
+            }
+            if(flag){
+                result++;
+            }
+        }
+
+        return result;
     }
 
     /*
