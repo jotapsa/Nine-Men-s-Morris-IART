@@ -14,6 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import logic.BoardEval;
+import logic.Computer;
+import logic.GameState;
+import logic.Player;
 import utilities.Global;
 
 public class NineMensMorrisGUI extends JFrame {
@@ -23,7 +27,9 @@ public class NineMensMorrisGUI extends JFrame {
 	private JButton aboutButton;
 	private JComboBox gameModeSelector;
 	private GameBoard board;
-	
+	private GameState state;
+	private Player p1;
+	private Player p2;
 
 	/**
 	 * Launch the application.
@@ -66,7 +72,7 @@ public class NineMensMorrisGUI extends JFrame {
 	
 	private void createGameBoard() {
 		board = new GameBoard(this);
-		board.setBounds(Global.BOARD_START_X, Global.BOARD_START_Y, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
+		board.setBounds(Global.BOARD_BORDER_X, 50, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
 		board.setBackground(Global.BACKGROUND_COLOR);
 		contentPane.add(board);
 	}
@@ -85,6 +91,12 @@ public class NineMensMorrisGUI extends JFrame {
 		newGameButton = new JButton("Start new game");
 		newGameButton.setSize(Global.START_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
 		newGameButton.setLocation(Global.START_BUTTON_X, Global.BUTTONS_Y);
+		newGameButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startNewGame();
+			}
+		});
 		contentPane.add(newGameButton);
 	}
 	
@@ -124,4 +136,33 @@ public class NineMensMorrisGUI extends JFrame {
 		contentPane.add(aboutButton);
 		
 	}
+	
+	public void startNewGame() {
+		
+		String option = String.valueOf(gameModeSelector.getSelectedItem());
+		
+		switch(option) {
+			case "Player vs Player":
+				p1 = new Player(Global.maximizerPlayer);
+				p2 = new Player(Global.minimizerPlayer);
+				break;
+			case "Player vs PC":
+				p1 = new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
+				p2 = new Player(Global.minimizerPlayer);
+				break;	
+			case "PC vs PC":
+				p1 = new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
+				p2 = new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1);
+				break;
+			default:
+				return;
+		}
+		
+		state = new GameState();
+		
+		board.setGameState(state);
+		
+		board.repaint();
+	}
+
 }
