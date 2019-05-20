@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import utilities.Global;
 
 public class NineMensMorrisGUI extends JFrame {
 
@@ -45,8 +47,10 @@ public class NineMensMorrisGUI extends JFrame {
 	public NineMensMorrisGUI() {
 		super("Nine Men's Morris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(555, 240, 720, 720);
+		setBounds(555, 240, Global.WIDTH, Global.HEIGHT);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setForeground(Color.BLACK);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
@@ -62,35 +66,32 @@ public class NineMensMorrisGUI extends JFrame {
 	
 	private void createGameBoard() {
 		board = new GameBoard(this);
-		board.setBounds(12, 60, 680, 600);
-//		board.setBackground(new Color(128, 0, 128));
+		board.setBounds(Global.BOARD_START_X, Global.BOARD_START_Y, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
+		board.setBackground(Global.BACKGROUND_COLOR);
 		contentPane.add(board);
 	}
 
 	public void createGameModeSelector() {
 		JLabel lblGameMode = new JLabel("Game Mode");
-		lblGameMode.setBounds(220, 10, 76, 26);
+		lblGameMode.setBounds(Global.LABEL_START_X, Global.BUTTONS_Y, Global.LABEL_WIDTH, Global.BUTTONS_HEIGHT);
 		contentPane.add(lblGameMode);
 		
-		String[] options = {"Select...", "Player vs Player", "Player vs PC", "PC vs PC"};
-		gameModeSelector = new JComboBox(options);
-		gameModeSelector.setBounds(295, 10, 130, 25);
+		gameModeSelector = new JComboBox<Object>(Global.GAME_MODES);
+		gameModeSelector.setBounds(Global.PICKER_START_X, Global.BUTTONS_Y, Global.PICKER_WIDTH, 25);
 		contentPane.add(gameModeSelector);
 	}
 	
 	public void createNewGameButton() {
 		newGameButton = new JButton("Start new game");
-		newGameButton.setSize(130, 26);
-		newGameButton.setLocation(440, 10);
-		newGameButton.setPreferredSize(new Dimension(116, 40));
+		newGameButton.setSize(Global.START_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
+		newGameButton.setLocation(Global.START_BUTTON_X, Global.BUTTONS_Y);
 		contentPane.add(newGameButton);
 	}
 	
 	public void createAboutButton() {
 		aboutButton = new JButton("About");
-		aboutButton.setSize(100, 26);
-		aboutButton.setLocation(585, 10);
-		aboutButton.setPreferredSize(new Dimension(116, 40));
+		aboutButton.setSize(Global.ABOUT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
+		aboutButton.setLocation(Global.ABOUT_BUTTON_X, Global.BUTTONS_Y);
 		aboutButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +114,7 @@ public class NineMensMorrisGUI extends JFrame {
 				
 				d.getContentPane().add(new JLabel("Faculty of Engineering  --- University of Porto"));
 				
-				d.setLocation(p.getLocation().x + 200, p.getLocation().y + 200);
+				d.setLocation(p.getLocation().x + Global.WIDTH/4, p.getLocation().y + Global.HEIGHT/4);
 				
 	            d.setSize(400, 270); 
 	  
