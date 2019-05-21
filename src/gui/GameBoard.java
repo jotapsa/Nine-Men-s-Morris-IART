@@ -15,6 +15,7 @@ import utilities.Global;
 public class GameBoard extends JPanel implements MouseListener {
 	private JFrame parentComponent;
 	private GameState game;
+	private Move storedMove = null;
 	
 	public GameBoard(JFrame parent) {
 		
@@ -28,17 +29,31 @@ public class GameBoard extends JPanel implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void reset() {
+		storedMove = null;
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
-		int clickedSpot;
+		int clickedSpot = clickedSpotIndex(e);
 		Move m = null;
 		
 		System.out.println(game.getCurrentState());
 		
+		if(game.getCurrentState() == GameState.State.PLACING && storedMove != null) {
+			storedMove.setTaken(clickedSpot);
+			
+			if(game.isValidTake(storedMove)) {
+				game.doMove(storedMove);
+				storedMove = null;
+				repaint();
+				return;
+			}
+		}	
 		//clicking is only available while placing stones
-		if(game.getCurrentState() == GameState.State.PLACING) {
+		else if(game.getCurrentState() == GameState.State.PLACING && storedMove == null) {
 			
 			clickedSpot = clickedSpotIndex(e);
 			
@@ -49,7 +64,12 @@ public class GameBoard extends JPanel implements MouseListener {
 			m = new Move(clickedSpot);
 			
 			if(game.isValidMove(m)) {
-				game.doMove(m);
+				if(game.moveCausesMill(m)) {
+					storedMove = m;
+				}
+				else {
+					game.doMove(m);
+				}
 			}
 		}
 		
@@ -181,6 +201,20 @@ public class GameBoard extends JPanel implements MouseListener {
 				else {
 					continue;
 				}
+				g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+			}
+			
+			if(storedMove != null) {
+				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
+				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
+				
+				if(game.getCurrentPlayer() == Global.maximizerPlayer) {
+					g.setColor(Global.P1_COLOR);
+				}
+				else {
+					g.setColor(Global.P2_COLOR);
+				}
+				
 				g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 			}
 		}

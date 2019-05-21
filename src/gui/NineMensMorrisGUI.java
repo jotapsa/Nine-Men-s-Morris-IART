@@ -160,6 +160,8 @@ public class NineMensMorrisGUI extends JFrame {
 		
 		state = new GameState();
 		
+		board.reset();
+		
 		board.setGameState(state);
 		
 		board.repaint();
