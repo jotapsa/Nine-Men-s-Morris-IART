@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -92,10 +93,10 @@ public class GameBoard extends JPanel implements MouseListener {
 		int startX, startY, endX, endY;
 		
 		g.setColor(Global.P1_COLOR);
-		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, 30, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, 15, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		
 		g.setColor(Global.P2_COLOR);
-		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X, 30, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X, 15, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		
 		
 		
@@ -105,10 +106,11 @@ public class GameBoard extends JPanel implements MouseListener {
 		
 		//PRECISO MUDAR TAMANHO DE LETRA E ALINHAMENTO
 		if(hasGameStarted()) {
+			g.setFont(new Font("Tahoma", Font.PLAIN, 40));
 			g.setColor(Global.P1_COLOR);
 			g.drawString("9", Global.P1_N_AVAILABLE_ROCKS_X - 30, 50);
 			g.setColor(Global.P2_COLOR);
-			g.drawString("9", Global.P2_N_AVAILABLE_ROCKS_X + 30, 50);
+			g.drawString("9", Global.P2_N_AVAILABLE_ROCKS_X + 60, 50);
 			
 			for(int i = 0; i < game.getBoard().size(); i++) {
 				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0];
