@@ -51,6 +51,7 @@ public class Global {
     public final static int ROCK_RADIUS = 40;
     public final static int P1_N_AVAILABLE_ROCKS_X = BOARD_WIDTH / 4 + 50;
     public final static int P2_N_AVAILABLE_ROCKS_X = BOARD_WIDTH / 2 + BOARD_WIDTH / 4 - 50;
+    public final static int N_AVAILABLE_ROCKS_Y = 15;
     public final static Color BACKGROUND_COLOR = new Color(255,235,205);
     public final static Color P1_COLOR = new Color(255, 0, 0);
     public final static Color P2_COLOR = new Color(0, 0, 255);

@@ -2,6 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import utilities.Global;
 
@@ -135,6 +136,10 @@ public class GameState {
 
     public int getMillCountdown() {
         return this.millCountdown;
+    }
+    
+    public int getPlayerAvailableRocks(int player) {
+    	return 9 - Collections.frequency(board, player);
     }
 
     public int getNMoves() {
