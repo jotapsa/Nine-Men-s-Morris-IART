@@ -12,6 +12,7 @@ public class Global {
     public final static int pc2PlacingDepth = 3;
     public final static int pc1Depth = 5;
     public final static int pc2Depth = 5;
+    public final static int INVALID_INDEX = -1;
     
     public final static Object[] GAME_MODES = {"Select...", "Player vs Player", "Player vs PC", "PC vs PC"};
     
@@ -55,6 +56,7 @@ public class Global {
     public final static Color BACKGROUND_COLOR = new Color(255,235,205);
     public final static Color P1_COLOR = new Color(255, 0, 0);
     public final static Color P2_COLOR = new Color(0, 0, 255);
+    public final static Color SELECTED_ROCK_COLOR = new Color(255, 255, 0);
     public final static Color LINES_COLOR = Color.BLACK;
     
 //    ABOUT BUTTON
