@@ -41,7 +41,7 @@ public class GameBoard extends JPanel implements MouseListener {
 		int clickedSpot = clickedSpotIndex(e);
 		Move m = null;
 
-		if(clickedSpot == Global.INVALID_INDEX) {
+		if(clickedSpot == Global.INVALID_INDEX || game == null) {
 			return;
 		}
 
@@ -71,23 +71,28 @@ public class GameBoard extends JPanel implements MouseListener {
 			case MOVING:
 			case FLYING:
 //				if origin is not yet picked
-				if(start == Global.INVALID_INDEX) {
+//				needs to check rock ownership
+				if(start == Global.INVALID_INDEX && game.getCurrentPlayer() == game.getBoard().get(clickedSpot)) {
 					start = clickedSpot;
 				}
 				else if(start == clickedSpot) {
 					start = Global.INVALID_INDEX;
 				}
-				else {
+				else if(start != Global.INVALID_INDEX) {
 					if(storedMove != null) {
 						storedMove.setTaken(clickedSpot);
 						if(game.isValidTake(storedMove)) {
-							game.doMove(m);
+							game.doMove(storedMove);
 							storedMove = null;
 							start = Global.INVALID_INDEX;
 						}
 					}
 					else {
+						if(start == Global.INVALID_INDEX) {
+							return;
+						}
 						m = new Move(start, clickedSpot);
+						System.out.println(start + " ->  " + clickedSpot);
 						if(game.isValidMove(m)) {
 							if(game.moveCausesMill(m)) {
 								storedMove = m;
@@ -224,8 +229,11 @@ public class GameBoard extends JPanel implements MouseListener {
 			for(int i = 0; i < game.getBoard().size(); i++) {
 				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
 				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
-				if(i == start) {
+				if(i == start && storedMove == null) {
 					g.setColor(Global.SELECTED_ROCK_COLOR);
+				}
+				else if(i == start && storedMove.getEnd() != Global.INVALID_INDEX) {
+					continue;
 				}
 				else if(game.getBoard().get(i) == Global.maximizerPlayer) {
 					g.setColor(Global.P1_COLOR);
@@ -239,8 +247,14 @@ public class GameBoard extends JPanel implements MouseListener {
 			}
 
 			if(storedMove != null) {
-				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
-				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
+				if(storedMove.getEnd() == Global.INVALID_INDEX) {
+					startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
+					startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
+				}
+				else {
+					startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][0] - Global.ROCK_RADIUS / 2;
+					startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][1] - Global.ROCK_RADIUS / 2;
+				}
 
 				if(game.getCurrentPlayer() == Global.maximizerPlayer) {
 					g.setColor(Global.P1_COLOR);
