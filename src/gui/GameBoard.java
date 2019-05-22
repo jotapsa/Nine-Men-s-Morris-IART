@@ -1,15 +1,20 @@
 package gui;
 
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import logic.Computer;
 import logic.GameState;
 import logic.Move;
+import logic.Player;
 import utilities.Global;
 
 public class GameBoard extends JPanel implements MouseListener {
@@ -17,6 +22,8 @@ public class GameBoard extends JPanel implements MouseListener {
 	private GameState game;
 	private Move storedMove = null;
 	private int start = -1;
+	private Player p1;
+	private Player p2;
 
 	public GameBoard(JFrame parent) {
 
@@ -31,9 +38,27 @@ public class GameBoard extends JPanel implements MouseListener {
 
 	}
 
-	public void reset() {
+	public void resetUserOptions() {
 		storedMove = null;
+		start = Global.INVALID_INDEX;
 	}
+	
+	public void setP1(Player p) {
+		p1 = p;
+	}
+	
+	public void setP2(Player p) {
+		p2 = p;
+	}
+	
+	public boolean isP1PC() {
+		return p1 instanceof Computer;
+	}
+	
+	public boolean isP2PC() {
+		return p2 instanceof Computer;
+	}
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -41,7 +66,7 @@ public class GameBoard extends JPanel implements MouseListener {
 		int clickedSpot = clickedSpotIndex(e);
 		Move m = null;
 
-		if(clickedSpot == Global.INVALID_INDEX || game == null || game.isGameOver() >= 0) {
+		if(clickedSpot == Global.INVALID_INDEX || game == null || game.isGameOver() >= 0 || isBotTurn()) {
 			return;
 		}
 
@@ -53,7 +78,7 @@ public class GameBoard extends JPanel implements MouseListener {
 					storedMove.setTaken(clickedSpot);
 					if(game.isValidTake(storedMove)) {
 						game.doMove(storedMove);
-						storedMove = null;
+						resetUserOptions();
 					}
 				}
 				else {
@@ -83,8 +108,7 @@ public class GameBoard extends JPanel implements MouseListener {
 						storedMove.setTaken(clickedSpot);
 						if(game.isValidTake(storedMove)) {
 							game.doMove(storedMove);
-							storedMove = null;
-							start = Global.INVALID_INDEX;
+							resetUserOptions();
 						}
 					}
 					else {
@@ -162,6 +186,10 @@ public class GameBoard extends JPanel implements MouseListener {
 
 	public boolean hasGameStarted() {
 		return game != null;
+	}
+	
+	public boolean hasGameEnded() {
+		return game.isGameOver() >= 0;
 	}
 
 	public void renderSpots(Graphics g) {
@@ -256,6 +284,45 @@ public class GameBoard extends JPanel implements MouseListener {
 			g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		}
 	}
+	
+	public void announceWinner() {
+		JDialog d = new JDialog(this.parentComponent, "About");
+		
+		d.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+		
+		switch(game.isGameOver()) {
+			case 0:
+				d.getContentPane().add(new JLabel("It's a draw!"));
+				break;
+			case 1:
+				d.getContentPane().add(new JLabel("Player 1 has won the game!"));
+				break;
+			case 2:
+				d.getContentPane().add(new JLabel("Player 2 has won the game!"));
+				break;
+			default:
+				d.getContentPane().add(new JLabel("Something is wrong!"));
+				break;
+		}
+		
+		d.setLocation(parentComponent.getLocation().x + Global.WIDTH/4, parentComponent.getLocation().y + Global.HEIGHT/4);
+		
+		d.setSize(200, 100);
+		
+		d.setVisible(true);
+	}
+	
+	public boolean isPC1Turn() {
+		return game.getCurrentPlayer() == Global.maximizerPlayer && this.isP1PC();
+	}
+	
+	public boolean isPC2Turn() {
+		return game.getCurrentPlayer() == Global.minimizerPlayer && this.isP2PC();
+	}
+	
+	public boolean isBotTurn() {	
+		return isPC1Turn() || isPC2Turn();
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -272,6 +339,24 @@ public class GameBoard extends JPanel implements MouseListener {
 			renderAvailbleStones(g);
 			
 			renderGameBoardStones(g);
+			
+			if(hasGameEnded()) {
+				announceWinner();
+				return;
+			}
+			
+			if(isBotTurn()) {
+				if(game.getCurrentPlayer() == Global.maximizerPlayer && isPC1Turn()) {
+					game.doMove(p1.getMove(game));
+				}
+				else {
+					game.doMove(p2.getMove(game));
+				}
+				
+				System.out.println("PC played");
+				
+				repaint();
+			}
 		}
 	}
 }

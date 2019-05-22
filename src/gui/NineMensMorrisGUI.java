@@ -28,8 +28,6 @@ public class NineMensMorrisGUI extends JFrame {
 	private JComboBox gameModeSelector;
 	private GameBoard board;
 	private GameState state;
-	private Player p1;
-	private Player p2;
 
 	/**
 	 * Launch the application.
@@ -143,16 +141,16 @@ public class NineMensMorrisGUI extends JFrame {
 		
 		switch(option) {
 			case "Player vs Player":
-				p1 = new Player(Global.maximizerPlayer);
-				p2 = new Player(Global.minimizerPlayer);
+				board.setP1(new Player(Global.maximizerPlayer));
+				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "Player vs PC":
-				p1 = new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
-				p2 = new Player(Global.minimizerPlayer);
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1));
+				board.setP2(new Player(Global.minimizerPlayer));
 				break;	
 			case "PC vs PC":
-				p1 = new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
-				p2 = new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1);
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1));
+				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1));
 				break;
 			default:
 				return;
@@ -160,7 +158,7 @@ public class NineMensMorrisGUI extends JFrame {
 		
 		state = new GameState();
 		
-		board.reset();
+		board.resetUserOptions();
 		
 		board.setGameState(state);
 		
