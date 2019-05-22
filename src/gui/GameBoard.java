@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -219,6 +220,17 @@ public class GameBoard extends JPanel implements MouseListener {
 			}	
 		}
 	}
+	
+	public void renderCurrentPlayer(Graphics g) {
+		String msg = game.getCurrentPlayer() == Global.maximizerPlayer ? "P1 Turn" : "P2 Turn";
+		Color c  = game.getCurrentPlayer() == Global.maximizerPlayer ? Global.P1_COLOR : Global.P2_COLOR;
+		
+		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		
+		g.setColor(c);
+		
+		g.drawString(msg, 20, 40);
+	}
 
 	public void renderAvailbleStones(Graphics g) {
 		int p1Available, p2Available;
@@ -237,7 +249,7 @@ public class GameBoard extends JPanel implements MouseListener {
 		g.setColor(Global.P1_COLOR);
 		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		g.setColor(Global.P2_COLOR);
-		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X - Global.ROCK_RADIUS, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 	}
 	
 	public void renderGameBoardStones(Graphics g) {
@@ -323,6 +335,19 @@ public class GameBoard extends JPanel implements MouseListener {
 	public boolean isBotTurn() {	
 		return isPC1Turn() || isPC2Turn();
 	}
+	
+	public void botPlays() {
+		if(game.getCurrentPlayer() == Global.maximizerPlayer && isPC1Turn()) {
+			game.doMove(p1.getMove(game));
+		}
+		else {
+			game.doMove(p2.getMove(game));
+		}
+		
+		System.out.println("PC played");
+		
+		repaint();
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -335,6 +360,8 @@ public class GameBoard extends JPanel implements MouseListener {
 		renderLines(g);
 		
 		if(hasGameStarted()) {
+			
+			renderCurrentPlayer(g);
 
 			renderAvailbleStones(g);
 			
@@ -346,16 +373,7 @@ public class GameBoard extends JPanel implements MouseListener {
 			}
 			
 			if(isBotTurn()) {
-				if(game.getCurrentPlayer() == Global.maximizerPlayer && isPC1Turn()) {
-					game.doMove(p1.getMove(game));
-				}
-				else {
-					game.doMove(p2.getMove(game));
-				}
-				
-				System.out.println("PC played");
-				
-				repaint();
+				botPlays();
 			}
 		}
 	}
