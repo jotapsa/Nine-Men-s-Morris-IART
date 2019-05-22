@@ -41,7 +41,7 @@ public class GameBoard extends JPanel implements MouseListener {
 		int clickedSpot = clickedSpotIndex(e);
 		Move m = null;
 
-		if(clickedSpot == Global.INVALID_INDEX || game == null) {
+		if(clickedSpot == Global.INVALID_INDEX || game == null || game.isGameOver() >= 0) {
 			return;
 		}
 
@@ -204,67 +204,74 @@ public class GameBoard extends JPanel implements MouseListener {
 		g.setColor(Global.P2_COLOR);
 		g.drawString(Integer.toString(p2Available), Global.P2_N_AVAILABLE_ROCKS_X + 60, 50);
 	}
+	
+	public void renderAvailableStonesStones(Graphics g) {
+		g.setColor(Global.P1_COLOR);
+		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		g.setColor(Global.P2_COLOR);
+		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+	}
+	
+	public void renderGameBoardStones(Graphics g) {
+		
+		int startX, startY;
+		
+		for(int i = 0; i < game.getBoard().size(); i++) {
+			startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
+			startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
+			if(i == start && storedMove == null) {
+				g.setColor(Global.SELECTED_ROCK_COLOR);
+			}
+			else if(i == start && storedMove.getEnd() != Global.INVALID_INDEX) {
+				continue;
+			}
+			else if(game.getBoard().get(i) == Global.maximizerPlayer) {
+				g.setColor(Global.P1_COLOR);
+			} else if(game.getBoard().get(i) == Global.minimizerPlayer) {
+				g.setColor(Global.P2_COLOR);
+			}
+			else {
+				continue;
+			}
+			g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		}
+
+		if(storedMove != null) {
+			if(storedMove.getEnd() == Global.INVALID_INDEX) {
+				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
+				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
+			}
+			else {
+				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][0] - Global.ROCK_RADIUS / 2;
+				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][1] - Global.ROCK_RADIUS / 2;
+			}
+
+			if(game.getCurrentPlayer() == Global.maximizerPlayer) {
+				g.setColor(Global.P1_COLOR);
+			}
+			else {
+				g.setColor(Global.P2_COLOR);
+			}
+
+			g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
+		}
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		int startX, startY, endX, endY;
 
-		g.setColor(Global.P1_COLOR);
-		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
-
-		g.setColor(Global.P2_COLOR);
-		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
-
-
+		renderAvailableStonesStones(g);
+		
 		renderSpots(g);
 
 		renderLines(g);
-
-		//PRECISO MUDAR TAMANHO DE LETRA E ALINHAMENTO
+		
 		if(hasGameStarted()) {
 
 			renderAvailbleStones(g);
-
-			for(int i = 0; i < game.getBoard().size(); i++) {
-				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
-				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
-				if(i == start && storedMove == null) {
-					g.setColor(Global.SELECTED_ROCK_COLOR);
-				}
-				else if(i == start && storedMove.getEnd() != Global.INVALID_INDEX) {
-					continue;
-				}
-				else if(game.getBoard().get(i) == Global.maximizerPlayer) {
-					g.setColor(Global.P1_COLOR);
-				} else if(game.getBoard().get(i) == Global.minimizerPlayer) {
-					g.setColor(Global.P2_COLOR);
-				}
-				else {
-					continue;
-				}
-				g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
-			}
-
-			if(storedMove != null) {
-				if(storedMove.getEnd() == Global.INVALID_INDEX) {
-					startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
-					startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
-				}
-				else {
-					startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][0] - Global.ROCK_RADIUS / 2;
-					startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][1] - Global.ROCK_RADIUS / 2;
-				}
-
-				if(game.getCurrentPlayer() == Global.maximizerPlayer) {
-					g.setColor(Global.P1_COLOR);
-				}
-				else {
-					g.setColor(Global.P2_COLOR);
-				}
-
-				g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
-			}
+			
+			renderGameBoardStones(g);
 		}
 	}
 }
