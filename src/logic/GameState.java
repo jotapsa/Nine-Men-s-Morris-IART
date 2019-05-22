@@ -139,7 +139,23 @@ public class GameState {
     }
     
     public int getPlayerAvailableRocks(int player) {
-    	return 9 - Collections.frequency(board, player);
+    	if(this.nmoves > 18) {
+    		return 0;
+    	}
+    	if(this.nmoves == 0) {
+    		return 9;
+    	}
+    	else if(player == Global.maximizerPlayer) {
+    		if(this.nmoves % 2 == 0 ) {
+    			return 9 - this.nmoves / 2;
+    		}
+    		else {
+    			return 9 - this.nmoves /2 - 1;
+    		}
+    	}
+    	else {
+    		return 9 - this.nmoves / 2; 
+    	}
     }
 
     public int getNMoves() {
