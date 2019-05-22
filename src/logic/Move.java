@@ -1,9 +1,11 @@
 package logic;
 
+import utilities.Global;
+
 public class Move {
-    private int start = -1;
-    private int end = -1;
-    private int taken = -1;
+    private int start = Global.INVALID_INDEX;
+    private int end = Global.INVALID_INDEX;
+    private int taken = Global.INVALID_INDEX;
 
     public Move(int startPos){
         this.start = startPos;

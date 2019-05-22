@@ -2,6 +2,9 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+
+import utilities.Global;
 
 public class GameState {
     private static int boardSize = 24;
@@ -39,6 +42,33 @@ public class GameState {
             {9, 22},
             {19, 21, 23},
             {14, 22},
+    };
+    
+    public static Integer[][] coords = {
+    		{Global.VL1, Global.HL1},
+    		{Global.VL4, Global.HL1},
+    		{Global.VL7, Global.HL1},
+    		{Global.VL2, Global.HL2},
+    		{Global.VL4, Global.HL2},
+    		{Global.VL6, Global.HL2},
+    		{Global.VL3, Global.HL3},
+    		{Global.VL4, Global.HL3},
+    		{Global.VL5, Global.HL3},
+    		{Global.VL1, Global.HL4},
+    		{Global.VL2, Global.HL4},
+    		{Global.VL3, Global.HL4},
+    		{Global.VL5, Global.HL4},
+    		{Global.VL6, Global.HL4},
+    		{Global.VL7, Global.HL4},
+    		{Global.VL3, Global.HL5},
+    		{Global.VL4, Global.HL5},
+    		{Global.VL5, Global.HL5},
+    		{Global.VL2, Global.HL6},
+    		{Global.VL4, Global.HL6},
+    		{Global.VL6, Global.HL6},
+    		{Global.VL1, Global.HL7},
+    		{Global.VL4, Global.HL7},
+    		{Global.VL7, Global.HL7},
     };
 
     private static Integer[][] possibleMills = {
@@ -107,6 +137,26 @@ public class GameState {
 
     public int getMillCountdown() {
         return this.millCountdown;
+    }
+    
+    public int getPlayerAvailableRocks(int player) {
+    	if(this.nmoves > 18) {
+    		return 0;
+    	}
+    	if(this.nmoves == 0) {
+    		return 9;
+    	}
+    	else if(player == Global.maximizerPlayer) {
+    		if(this.nmoves % 2 == 0 ) {
+    			return 9 - this.nmoves / 2;
+    		}
+    		else {
+    			return 9 - this.nmoves /2 - 1;
+    		}
+    	}
+    	else {
+    		return 9 - this.nmoves / 2; 
+    	}
     }
 
     public int getNMoves() {

@@ -1,17 +1,13 @@
+
 import logic.Computer;
 import logic.GameState;
 import logic.Player;
-import logic.BoardEval;
 import utilities.Global;
+import logic.BoardEval;
 
 final class Main {
 
-	public final static int maximizerPlayer = 1;
-	public final static int minimizerPlayer = 2;
-	private final static int pc1PlacingDepth = 3;
-    private final static int pc2PlacingDepth = 3;
-	private final static int pc1Depth = 5;
-	private final static int pc2Depth = 5;
+	
 
     public static void main(String[] args) {
         int answer = 0;
@@ -23,20 +19,20 @@ final class Main {
             switch (answer){
                 case 1:
                     newGame(
-                            new Computer(maximizerPlayer, pc1PlacingDepth, pc1Depth, BoardEval::fav1),
-                            new Player(minimizerPlayer)
+                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1),
+                            new Player(Global.minimizerPlayer)
                     );
                     break;
                 case 2:
                     newGame(
-                            new Player(maximizerPlayer),
-                            new Player(minimizerPlayer)
+                    		new Player(Global.maximizerPlayer),
+                            new Player(Global.minimizerPlayer)
                     );
                     break;
                 case 3:
                     newGame(
-                            new Computer(maximizerPlayer, pc1PlacingDepth, pc1Depth, BoardEval::fav1),
-                            new Computer(minimizerPlayer, pc2PlacingDepth, pc2Depth, BoardEval::fav1)
+                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1),
+                            new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1)
                     );
                     break;
                 case 4:
