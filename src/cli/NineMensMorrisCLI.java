@@ -72,12 +72,10 @@ public class NineMensMorrisCLI {
     public static void printBoardStats(GameState gameState) {
         System.out.println("\n---- Board Stats ----");
         System.out.println("Last move - " + gameState.getLastMove());
-        System.out.println("PLACING: ");
-        System.out.println("\tevaluatePiecePlacement - " + BoardEval.evaluatePiecePlacement(gameState));
-        System.out.println("ELSE: ");
-        System.out.println("\tevaluatePossibleMoves - " + BoardEval.evaluatePossibleMoves(gameState));
+        System.out.println("NOT FLYING : ");
+        System.out.println("\tevaluatePossibleMovingMoves - " + BoardEval.evaluatePossibleMovingMoves(gameState));
 
-        System.out.println("evaluatePossibleMills - " + BoardEval.evaluatePossibleMills(gameState));
+        System.out.println("evaluatePiecePlacement - " + BoardEval.evaluatePiecePlacement(gameState));
         System.out.println("evaluateNumberOfPieces - " + BoardEval.evaluateNumberOfPieces(gameState));
         System.out.println("evaluateGameOver - " + BoardEval.evaluateGameOver(gameState));
     }

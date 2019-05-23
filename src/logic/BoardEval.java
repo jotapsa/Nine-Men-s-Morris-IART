@@ -8,25 +8,22 @@ import java.util.Random;
 public class BoardEval {
 
     private final static int winPoints = 50000;
-    private final static int drawPoints = 10000;
-    private final static int piecePoints = 1000;
+    private final static int drawPoints = 25000;
+    private final static int piecePoints = 2000;
     private final static int placementPoints = 50;
     private final static int possibleMillsPoints = 250;
     private final static int movePoints = 500;
-    private final static int openMovePoints = 250;
+    private final static int openMovePoints = 50;
 
 
     public static int fav1 (GameState gameState) {
         int value=0;
 
-        if(gameState.getCurrentState().equals(GameState.State.PLACING)){
-            value += evaluatePiecePlacement(gameState);
-            //value += evaluatePossibleMovesDuringPlacing(gameState);
-
-        } else{
-            value += evaluatePossibleMoves(gameState);
+        if(!gameState.getCurrentState().equals(GameState.State.FLYING)){
+            value += evaluatePossibleMovingMoves(gameState);
         }
 
+        value += evaluatePiecePlacement(gameState);
         //value += evaluatePossibleMills(gameState);
         value += evaluateNumberOfPieces(gameState);
         value += evaluateGameOver(gameState);
@@ -36,7 +33,7 @@ public class BoardEval {
         return value;
     }
 
-    private static int evaluatePossibleMovesDuringPlacing(GameState gameState) {
+    public static int evaluatePossibleMovingMoves(GameState gameState) {
         int value=0;
         ArrayList<Integer> board = gameState.getBoard();
 
