@@ -341,7 +341,7 @@ public class GameState {
     public Move giveHint(GameState g) {
     	Move toReturn = null;
     	GameState aux = new GameState(g);
-    	Computer auxPlayer = new Computer(aux.currentPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
+    	Computer auxPlayer = new Computer(aux.currentPlayer, Global.pc1Depth, Global.pc1DecFunc , BoardEval::fav1);
     	
     	toReturn = auxPlayer.getMove(aux);
     	

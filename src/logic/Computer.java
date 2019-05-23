@@ -7,15 +7,13 @@ import java.util.function.Function;
 
 public class Computer extends Player {
 
-    private int placingDepth;
     private int depth;
     private Global.decFunc decFunc;
     private final Function<GameState, Integer> evalFunc;
 
-    public Computer(int number, int placingDepth, int depth, Global.decFunc decFunc, Function<GameState, Integer> evalFunc) {
+    public Computer(int number, int depth, Global.decFunc decFunc, Function<GameState, Integer> evalFunc) {
         super(number);
 
-        this.placingDepth = placingDepth;
         this.depth = depth;
         this.decFunc = decFunc;
         this.evalFunc = evalFunc;

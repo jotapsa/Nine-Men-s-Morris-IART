@@ -181,12 +181,12 @@ public class NineMensMorrisGUI extends JFrame {
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "Player vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "PC vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
-				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
+				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1));
 				break;
 			default:
 				return;

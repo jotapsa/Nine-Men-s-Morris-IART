@@ -13,8 +13,6 @@ public class Global {
 
     public final static int maximizerPlayer = 1;
     public final static int minimizerPlayer = 2;
-    public final static int pc1PlacingDepth = 3;
-    public final static int pc2PlacingDepth = 3;
     public final static int pc1Depth = 5;
     public final static int pc2Depth = 5;
     public final static decFunc pc1DecFunc = decFunc.AlphaBeta;

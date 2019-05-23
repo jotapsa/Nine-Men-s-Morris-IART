@@ -16,7 +16,7 @@ public class NineMensMorrisCLI {
             switch (answer){
                 case 1:
                     newGame(
-                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc,BoardEval::fav1),
+                            new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc,BoardEval::fav1),
                             new Player(Global.minimizerPlayer)
                     );
                     break;
@@ -28,8 +28,8 @@ public class NineMensMorrisCLI {
                     break;
                 case 3:
                     newGame(
-                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
-                            new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1)
+                            new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
+                            new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1)
                     );
                     break;
                 case 4:
@@ -80,6 +80,8 @@ public class NineMensMorrisCLI {
     private static GameState newGame(Player player1, Player player2){
         GameState gameState = new GameState();
 
+        long startTime = System.currentTimeMillis();
+
         do{
             GameView.render(gameState);
 
@@ -94,8 +96,14 @@ public class NineMensMorrisCLI {
                     break;
             }
 
-            printBoardStats(gameState);
+//            printBoardStats(gameState);
         } while(gameState.isGameOver() == -1);
+
+        long estimatedTime = System.currentTimeMillis() - startTime;
+
+        System.out.println("Winner -> " + gameState.isGameOver());
+        System.out.println("Time -> " + estimatedTime/100);
+        System.out.println("Moves -> " + gameState.getNMoves());
 
         return gameState;
     }
