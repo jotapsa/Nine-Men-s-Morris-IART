@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cli.NineMensMorrisCLI;
 import logic.Computer;
 import logic.GameState;
 import logic.Move;
@@ -43,23 +44,23 @@ public class GameBoard extends JPanel implements MouseListener {
 		storedMove = null;
 		start = Global.INVALID_INDEX;
 	}
-	
+
 	public void setP1(Player p) {
 		p1 = p;
 	}
-	
+
 	public void setP2(Player p) {
 		p2 = p;
 	}
-	
+
 	public boolean isP1PC() {
 		return p1 instanceof Computer;
 	}
-	
+
 	public boolean isP2PC() {
 		return p2 instanceof Computer;
 	}
-	
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -188,7 +189,7 @@ public class GameBoard extends JPanel implements MouseListener {
 	public boolean hasGameStarted() {
 		return game != null;
 	}
-	
+
 	public boolean hasGameEnded() {
 		return game.isGameOver() >= 0;
 	}
@@ -217,18 +218,18 @@ public class GameBoard extends JPanel implements MouseListener {
 				endY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[neighboor][1];
 
 				g.drawLine(startX, startY, endX, endY);
-			}	
+			}
 		}
 	}
-	
+
 	public void renderCurrentPlayer(Graphics g) {
 		String msg = game.getCurrentPlayer() == Global.maximizerPlayer ? "P1 Turn" : "P2 Turn";
 		Color c  = game.getCurrentPlayer() == Global.maximizerPlayer ? Global.P1_COLOR : Global.P2_COLOR;
-		
+
 		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		
+
 		g.setColor(c);
-		
+
 		g.drawString(msg, 20, 40);
 	}
 
@@ -244,18 +245,18 @@ public class GameBoard extends JPanel implements MouseListener {
 		g.setColor(Global.P2_COLOR);
 		g.drawString(Integer.toString(p2Available), Global.P2_N_AVAILABLE_ROCKS_X + 60, 50);
 	}
-	
+
 	public void renderAvailableStonesStones(Graphics g) {
 		g.setColor(Global.P1_COLOR);
 		g.fillOval(Global.P1_N_AVAILABLE_ROCKS_X, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		g.setColor(Global.P2_COLOR);
 		g.fillOval(Global.P2_N_AVAILABLE_ROCKS_X - Global.ROCK_RADIUS, Global.N_AVAILABLE_ROCKS_Y, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 	}
-	
+
 	public void renderGameBoardStones(Graphics g) {
-		
+
 		int startX, startY;
-		
+
 		for(int i = 0; i < game.getBoard().size(); i++) {
 			startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
 			startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
@@ -296,12 +297,12 @@ public class GameBoard extends JPanel implements MouseListener {
 			g.fillOval(startX, startY, Global.ROCK_RADIUS, Global.ROCK_RADIUS);
 		}
 	}
-	
+
 	public void announceWinner() {
 		JDialog d = new JDialog(this.parentComponent, "About");
-		
+
 		d.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-		
+
 		switch(game.isGameOver()) {
 			case 0:
 				d.getContentPane().add(new JLabel("It's a draw!"));
@@ -316,26 +317,26 @@ public class GameBoard extends JPanel implements MouseListener {
 				d.getContentPane().add(new JLabel("Something is wrong!"));
 				break;
 		}
-		
+
 		d.setLocation(parentComponent.getLocation().x + Global.WIDTH/4, parentComponent.getLocation().y + Global.HEIGHT/4);
-		
+
 		d.setSize(200, 100);
-		
+
 		d.setVisible(true);
 	}
-	
+
 	public boolean isPC1Turn() {
 		return game.getCurrentPlayer() == Global.maximizerPlayer && this.isP1PC();
 	}
-	
+
 	public boolean isPC2Turn() {
 		return game.getCurrentPlayer() == Global.minimizerPlayer && this.isP2PC();
 	}
-	
-	public boolean isBotTurn() {	
+
+	public boolean isBotTurn() {
 		return isPC1Turn() || isPC2Turn();
 	}
-	
+
 	public void botPlays() {
 		if(game.getCurrentPlayer() == Global.maximizerPlayer && isPC1Turn()) {
 			game.doMove(p1.getMove(game));
@@ -343,9 +344,9 @@ public class GameBoard extends JPanel implements MouseListener {
 		else {
 			game.doMove(p2.getMove(game));
 		}
-		
+
 		System.out.println("PC played");
-		
+
 		repaint();
 	}
 
@@ -354,24 +355,28 @@ public class GameBoard extends JPanel implements MouseListener {
 		super.paintComponent(g);
 
 		renderAvailableStonesStones(g);
-		
+
 		renderSpots(g);
 
 		renderLines(g);
-		
+
 		if(hasGameStarted()) {
-			
+
 			renderCurrentPlayer(g);
 
 			renderAvailbleStones(g);
-			
+
 			renderGameBoardStones(g);
-			
+
+			if(game != null){
+				NineMensMorrisCLI.printBoardStats(game);
+			}
+
 			if(hasGameEnded()) {
 				announceWinner();
 				return;
 			}
-			
+
 			if(isBotTurn()) {
 				botPlays();
 			}

@@ -1,3 +1,5 @@
+package cli;
+
 import logic.GameState;
 
 import java.util.HashMap;

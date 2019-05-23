@@ -11,7 +11,7 @@ public class BoardEval {
     private final static int drawPoints = 10000;
     private final static int piecePoints = 1000;
     private final static int placementPoints = 50;
-    private final static int possibleMills = 250;
+    private final static int possibleMillsPoints = 250;
     private final static int movePoints = 500;
     private final static int openMovePoints = 250;
 
@@ -27,10 +27,10 @@ public class BoardEval {
             value += evaluatePossibleMoves(gameState);
         }
 
-        value += evaluatePossibleMills(gameState);
+        //value += evaluatePossibleMills(gameState);
         value += evaluateNumberOfPieces(gameState);
         value += evaluateGameOver(gameState);
-        value += randomComponent();
+//        value += randomComponent();
 
 
         return value;
@@ -64,16 +64,14 @@ public class BoardEval {
         return value * openMovePoints;
     }
 
-    private static int evaluatePossibleMills(GameState gameState) {
-        int value;
-
-        value = possibleMills* (gameState.getPossibleMillsForPlayer(Global.maximizerPlayer) -
-                        gameState.getPossibleMillsForPlayer(Global.minimizerPlayer));
-
-        return value;
+    public static int evaluatePossibleMills(GameState gameState) {
+        return  (
+                gameState.getPossibleMillsForPlayer(Global.maximizerPlayer-1) -
+                gameState.getPossibleMillsForPlayer(Global.minimizerPlayer-1)
+                ) * possibleMillsPoints;
     }
 
-    private static int evaluatePiecePlacement(GameState gameState) {
+    public static int evaluatePiecePlacement(GameState gameState) {
         int value=0;
 
         ArrayList<Integer> board = gameState.getBoard();
@@ -96,20 +94,13 @@ public class BoardEval {
 
 
     public static int evaluateNumberOfPieces(GameState gameState) {
-        int value=0;
-        int maximizerPieces, minimizerPieces;
+        int[] playerPieces = gameState.getPlayerPieces();
 
-        maximizerPieces = gameState.countBoardPieces(gameState.getBoard(), 1);
-        minimizerPieces = gameState.countBoardPieces(gameState.getBoard(), 2);
-
-        value += piecePoints * maximizerPieces;
-        value -= piecePoints * minimizerPieces;
-
-        return value;
+        return (playerPieces[Global.maximizerPlayer-1] -
+                playerPieces[Global.minimizerPlayer-1])* piecePoints;
     }
 
     public static int evaluatePossibleMoves(GameState gameState) {
-        int value=0;
         int maximizerMoves, minimizerMoves;
         GameState gameStateOtherTurn = new GameState(gameState);
         gameStateOtherTurn.changeTurn();
@@ -128,9 +119,7 @@ public class BoardEval {
                 break;
         }
 
-        value = maximizerMoves * movePoints - minimizerMoves * movePoints;
-
-        return value;
+        return (maximizerMoves - minimizerMoves) * movePoints;
     }
 
     public static int evaluateGameOver (GameState gameState) {

@@ -1,13 +1,13 @@
+package cli;
 
+import cli.GameView;
 import logic.Computer;
 import logic.GameState;
 import logic.Player;
 import utilities.Global;
 import logic.BoardEval;
 
-final class Main {
-
-	
+public class NineMensMorrisCLI {
 
     public static void main(String[] args) {
         int answer = 0;
@@ -69,10 +69,16 @@ final class Main {
         System.out.println("5 - Exit");
     }
 
-    private static void printBoardStats(GameState gameState) {
+    public static void printBoardStats(GameState gameState) {
         System.out.println("\n---- Board Stats ----");
+        System.out.println("Last move - " + gameState.getLastMove());
+        System.out.println("PLACING: ");
+        System.out.println("\tevaluatePiecePlacement - " + BoardEval.evaluatePiecePlacement(gameState));
+        System.out.println("ELSE: ");
+        System.out.println("\tevaluatePossibleMoves - " + BoardEval.evaluatePossibleMoves(gameState));
+
+        System.out.println("evaluatePossibleMills - " + BoardEval.evaluatePossibleMills(gameState));
         System.out.println("evaluateNumberOfPieces - " + BoardEval.evaluateNumberOfPieces(gameState));
-        System.out.println("evaluatePossibleMoves - " + BoardEval.evaluatePossibleMoves(gameState));
         System.out.println("evaluateGameOver - " + BoardEval.evaluateGameOver(gameState));
     }
 

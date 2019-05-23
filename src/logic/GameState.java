@@ -43,7 +43,7 @@ public class GameState {
             {19, 21, 23},
             {14, 22},
     };
-    
+
     public static Integer[][] coords = {
     		{Global.VL1, Global.HL1},
     		{Global.VL4, Global.HL1},
@@ -96,6 +96,7 @@ public class GameState {
     private State currentState;
 
     private int nmoves;
+    private int[] playerPieces = {9, 9};
 
     private int millCountdown;
     private int flyingMillCountdown;
@@ -138,7 +139,7 @@ public class GameState {
     public int getMillCountdown() {
         return this.millCountdown;
     }
-    
+
     public int getPlayerAvailableRocks(int player) {
     	if(this.nmoves > 18) {
     		return 0;
@@ -155,7 +156,7 @@ public class GameState {
     		}
     	}
     	else {
-    		return 9 - this.nmoves / 2; 
+    		return 9 - this.nmoves / 2;
     	}
     }
 
@@ -169,6 +170,10 @@ public class GameState {
 
     public ArrayList<ArrayList<Integer>> getHistoryBoard() {
         return this.boardHistory;
+    }
+
+    public int[] getPlayerPieces(){
+        return this.playerPieces;
     }
 
     public void reset(){
@@ -281,7 +286,7 @@ public class GameState {
 
     public int getPossibleMillsForPlayer(int player) {
         int result=0;
-        boolean flag=true;
+        boolean flag;
 
         for (Integer[] possibleMill : possibleMills) {
             flag = true;
@@ -315,7 +320,7 @@ public class GameState {
             return 0; // Draw
         }
 
-        if(this.getPossibleMoves().size() == 0 || (this.countBoardPieces(this.board, this.currentPlayer) == 2 && this.currentState != State.PLACING)){
+        if(this.getPossibleMoves().size() == 0 || this.playerPieces[this.currentPlayer -1] == 2){
             return 3 - this.currentPlayer; // Winner
         }
 
@@ -327,18 +332,6 @@ public class GameState {
 
         for(ArrayList<Integer> historyBoard : this.boardHistory){
             if(historyBoard.equals(board)){
-                n++;
-            }
-        }
-
-        return n;
-    }
-
-    public int countBoardPieces(ArrayList<Integer> board, int player) {
-        int n=0;
-
-        for(int cell : board){
-            if(cell == player){
                 n++;
             }
         }
@@ -420,17 +413,19 @@ public class GameState {
 
         if(move.getTaken() != -1){
             this.board.set(move.getTaken(), 0);
+            this.playerPieces[(3 - this.currentPlayer) - 1]--;
             this.millCountdown = 50;
         }
 
-        if(countBoardPieces(this.board, PLAYER_1) + countBoardPieces(this.board, PLAYER_2) == 6){
+        // A tie can occur when both players are reduced to 3 men and no mills are formed during ten turns.
+        if(this.playerPieces[0] + this.playerPieces[1] == 6){
             this.flyingMillCountdown--;
         }
 
         changeTurn();
         this.lastMove = move;
 
-        if(nmoves >= 18 && this.countBoardPieces(this.board, this.currentPlayer) == 3){
+        if(nmoves >= 18 && this.playerPieces[this.currentPlayer -1] == 3){
             this.currentState = State.FLYING;
         }
         else if(nmoves >= 18){
