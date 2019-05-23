@@ -24,10 +24,13 @@ public class NineMensMorrisGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JButton newGameButton;
+	private JButton hintButton;
 	private JButton aboutButton;
 	private JComboBox gameModeSelector;
 	private GameBoard board;
 	private GameState state;
+	private JLabel lblHint;
+	
 
 	/**
 	 * Launch the application.
@@ -60,6 +63,8 @@ public class NineMensMorrisGUI extends JFrame {
 		setContentPane(contentPane);
 		
 		createNewGameButton();
+		
+		createHintButton();
 		
 		createAboutButton();
 		
@@ -96,6 +101,19 @@ public class NineMensMorrisGUI extends JFrame {
 			}
 		});
 		contentPane.add(newGameButton);
+	}
+	
+	public void createHintButton() {
+		hintButton = new JButton("HINT");
+		hintButton.setSize(Global.HINT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
+		hintButton.setLocation(Global.HINT_BUTTON_X, Global.BUTTONS_Y);
+		
+		lblHint = new JLabel("");
+		lblHint.setSize(Global.HINT_LABEL_WIDTH, Global.BUTTONS_HEIGHT);
+		lblHint.setLocation(Global.HINT_LABEL_X, Global.BUTTONS_Y);
+		
+		contentPane.add(hintButton);
+		contentPane.add(lblHint);
 	}
 	
 	public void createAboutButton() {

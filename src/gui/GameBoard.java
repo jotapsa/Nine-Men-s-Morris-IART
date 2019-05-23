@@ -299,7 +299,7 @@ public class GameBoard extends JPanel implements MouseListener {
 	}
 
 	public void announceWinner() {
-		JDialog d = new JDialog(this.parentComponent, "About");
+		JDialog d = new JDialog(this.parentComponent, "Game Ended");
 
 		d.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
