@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import logic.BoardEval;
 import logic.Computer;
 import logic.GameState;
+import logic.Move;
 import logic.Player;
 import utilities.Global;
 
@@ -112,8 +113,25 @@ public class NineMensMorrisGUI extends JFrame {
 		lblHint.setSize(Global.HINT_LABEL_WIDTH, Global.BUTTONS_HEIGHT);
 		lblHint.setLocation(Global.HINT_LABEL_X, Global.BUTTONS_Y);
 		
+		hintButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showHint();
+			}
+		});
+		
 		contentPane.add(hintButton);
 		contentPane.add(lblHint);
+	}
+	
+	public void showHint() {
+		Move m = null;
+		
+		if(state != null) {
+			m = state.giveHint(state);
+			
+			lblHint.setText(m.toString());
+		}
 	}
 	
 	public void createAboutButton() {
