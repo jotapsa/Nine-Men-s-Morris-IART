@@ -26,6 +26,7 @@ public class GameBoard extends JPanel implements MouseListener {
 	private int start = -1;
 	private Player p1;
 	private Player p2;
+	private boolean gameOver = false;
 
 	public GameBoard(JFrame parent) {
 
@@ -43,6 +44,7 @@ public class GameBoard extends JPanel implements MouseListener {
 	public void resetUserOptions() {
 		storedMove = null;
 		start = Global.INVALID_INDEX;
+		gameOver = false;
 	}
 
 	public void setP1(Player p) {
@@ -372,7 +374,8 @@ public class GameBoard extends JPanel implements MouseListener {
 				NineMensMorrisCLI.printBoardStats(game);
 			}
 
-			if(hasGameEnded()) {
+			if(hasGameEnded() && !gameOver) {
+				gameOver = !gameOver;
 				announceWinner();
 				return;
 			}

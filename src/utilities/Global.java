@@ -80,8 +80,8 @@ public class Global {
     public final static int HINT_BUTTON_X = BOARD_START_X;
     
 //    HINT LABEL
-    public final static int HINT_LABEL_WIDTH = 30;
-    public final static int HINT_LABEL_X = HINT_BUTTON_X + HINT_BUTTON_WIDTH + BUTTONS_SPACING;
+    public final static int HINT_LABEL_WIDTH = 50;
+    public final static int HINT_LABEL_X = HINT_BUTTON_X + HINT_BUTTON_WIDTH + BUTTONS_SPACING/3;
     
     
     private static Scanner s = new Scanner(System.in);
