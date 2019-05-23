@@ -11,7 +11,6 @@ public class BoardEval {
     private final static int drawPoints = 25000;
     private final static int piecePoints = 2000;
     private final static int placementPoints = 50;
-    private final static int possibleMillsPoints = 250;
     private final static int movePoints = 500;
     private final static int openMovePoints = 50;
 
@@ -19,15 +18,11 @@ public class BoardEval {
     public static int fav1 (GameState gameState) {
         int value=0;
 
-        if(!gameState.getCurrentState().equals(GameState.State.FLYING)){
-            value += evaluatePossibleMovingMoves(gameState);
-        }
-
+        value += evaluatePossibleMovingMoves(gameState);
         value += evaluatePiecePlacement(gameState);
-        //value += evaluatePossibleMills(gameState);
         value += evaluateNumberOfPieces(gameState);
         value += evaluateGameOver(gameState);
-//        value += randomComponent();
+        value += randomComponent();
 
 
         return value;
@@ -61,13 +56,6 @@ public class BoardEval {
         return value * openMovePoints;
     }
 
-    public static int evaluatePossibleMills(GameState gameState) {
-        return  (
-                gameState.getPossibleMillsForPlayer(Global.maximizerPlayer-1) -
-                gameState.getPossibleMillsForPlayer(Global.minimizerPlayer-1)
-                ) * possibleMillsPoints;
-    }
-
     public static int evaluatePiecePlacement(GameState gameState) {
         int value=0;
 
@@ -95,28 +83,6 @@ public class BoardEval {
 
         return (playerPieces[Global.maximizerPlayer-1] -
                 playerPieces[Global.minimizerPlayer-1])* piecePoints;
-    }
-
-    public static int evaluatePossibleMoves(GameState gameState) {
-        int maximizerMoves, minimizerMoves;
-        GameState gameStateOtherTurn = new GameState(gameState);
-        gameStateOtherTurn.changeTurn();
-        switch(gameState.getCurrentPlayer()){
-            case Global.maximizerPlayer:
-                maximizerMoves = gameState.getPossibleMoves().size();
-                minimizerMoves = gameStateOtherTurn.getPossibleMoves().size();
-                break;
-            case Global.minimizerPlayer:
-                minimizerMoves = gameState.getPossibleMoves().size();
-                maximizerMoves = gameStateOtherTurn.getPossibleMoves().size();
-                break;
-            default:
-                maximizerMoves = 0;
-                minimizerMoves = 0;
-                break;
-        }
-
-        return (maximizerMoves - minimizerMoves) * movePoints;
     }
 
     public static int evaluateGameOver (GameState gameState) {
