@@ -21,10 +21,14 @@ public class Global {
     public final static int INVALID_INDEX = -1;
 
     public final static Object[] GAME_MODES = {"Select...", "Player vs Player", "Player vs PC", "PC vs PC"};
+    public final static Object[] ALGORITHMS = {"Choose algorithm", "MiniMax", "Alpha-Beta"};
+    public final static Object[] DEPTH_OPTIONS = {"Choose Depth", "3", "4", "5", "6", "7"};
+  
+    
 
 //  WINDOW RELATED
-    public final static int WIDTH = 720;
-    public final static int HEIGHT = 800;
+    public final static int WIDTH = 1080;
+    public final static int HEIGHT = 900;
 
     public final static int BUTTONS_Y = 10;
     public final static int BUTTONS_HEIGHT = 25;
@@ -47,17 +51,27 @@ public class Global {
     public final static int VL6 = 5;
     public final static int VL7 = 6;
 
-    public final static int BOARD_WIDTH = WIDTH - 60;
-    public final static int BOARD_HEIGHT = 700;
-    public final static int BOARD_BORDER_X = (WIDTH - BOARD_WIDTH) /2;
-    public final static int BOARD_BORDER_Y = 75;
-    public final static int BOARD_SPACING = (BOARD_WIDTH - 2 * BOARD_BORDER_X) /6;
-    public final static int BOARD_START_X = (WIDTH - BOARD_WIDTH) / 2;
     public final static int BOARD_START_Y = 50;
+    public final static int BOARD_START_X = 30;
+    public final static int BOARD_MARGIN_BOTTOM = 15;
+    public final static int BOARD_WIDTH = WIDTH - 2 * BOARD_START_X;
+    public final static int BOARD_HEIGHT = HEIGHT - 2 * BOARD_START_Y - BOARD_MARGIN_BOTTOM;
+    public final static int CENTER_X = BOARD_WIDTH / 2;
+    public final static int CENTER_Y = BOARD_HEIGHT / 2;
+    
+    public final static int BOARD_BORDER_Y = 75;
+    public final static int BOARD_BORDER_X = BOARD_WIDTH <= BOARD_HEIGHT ? BOARD_WIDTH / 4 : BOARD_HEIGHT / 4;
+    
+    public final static int BOAD_SIDE_LENGTH = BOARD_HEIGHT <= BOARD_WIDTH ? BOARD_HEIGHT - 2 * BOARD_BORDER_Y : BOARD_WIDTH - 2 * BOARD_START_X;
+    public final static int BOARD_DRAW_START_X = CENTER_X - BOAD_SIDE_LENGTH / 2;
+    public final static int BOARD_DRAW_START_Y = CENTER_Y - BOAD_SIDE_LENGTH / 2;
+    
+    public final static int BOARD_SPACING = BOAD_SIDE_LENGTH / 6;
+    
     public final static int ROCK_SPOT_RADIUS = 10;
     public final static int ROCK_RADIUS = 40;
-    public final static int P1_N_AVAILABLE_ROCKS_X = BOARD_WIDTH / 4 + 50;
-    public final static int P2_N_AVAILABLE_ROCKS_X = BOARD_WIDTH / 2 + BOARD_WIDTH / 4 - 50;
+    public final static int P1_N_AVAILABLE_ROCKS_X = CENTER_X - 100;
+    public final static int P2_N_AVAILABLE_ROCKS_X = CENTER_X + 100;
     public final static int N_AVAILABLE_ROCKS_Y = 15;
     public final static Color BACKGROUND_COLOR = new Color(255,235,205);
     public final static Color P1_COLOR = new Color(255, 0, 0);
@@ -88,6 +102,15 @@ public class Global {
 //    HINT LABEL
     public final static int HINT_LABEL_WIDTH = 50;
     public final static int HINT_LABEL_X = HINT_BUTTON_X + HINT_BUTTON_WIDTH + BUTTONS_SPACING/3;
+    
+//    ALGORITHM PICKER
+    public final static int ALGORITHM_PICKER_START_X = HINT_LABEL_X + BUTTONS_SPACING + HINT_LABEL_WIDTH;
+    public final static int ALGORITHM_PICKER_WIDTH = 140;
+    
+//    DEPTH PICKER
+    public final static int DEPTH_PICKER_START_X = ALGORITHM_PICKER_START_X + ALGORITHM_PICKER_WIDTH + BUTTONS_SPACING;
+    public final static int DEPTH_PICKER_WIDTH = 150;
+    
     
     
     private static Scanner s = new Scanner(System.in);

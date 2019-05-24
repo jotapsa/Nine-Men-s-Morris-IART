@@ -168,8 +168,8 @@ public class GameBoard extends JPanel implements MouseListener {
 		//		System.out.println(x+"-"+y);
 
 		for(int i = 0; i < game.coords.length; i++) {
-			spotX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * game.coords[i][0];
-			spotY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * game.coords[i][1];
+			spotX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * game.coords[i][0];
+			spotY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * game.coords[i][1];
 			//			System.out.println("X: " + x  + " >= " + (spotX - Global.ROCK_SPOT_RADIUS) + " &&  <= " + (spotX + Global.ROCK_SPOT_RADIUS) + "?");
 			if(x >= spotX - Global.ROCK_RADIUS && x <= spotX + Global.ROCK_RADIUS) {
 				//				System.out.println("yes");
@@ -202,8 +202,8 @@ public class GameBoard extends JPanel implements MouseListener {
 		g.setColor(Global.LINES_COLOR);
 
 		for(Integer[] coords : GameState.coords) {
-			startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * coords[0] - Global.ROCK_SPOT_RADIUS / 2;
-			startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * coords[1] - Global.ROCK_SPOT_RADIUS / 2;
+			startX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * coords[0] - Global.ROCK_SPOT_RADIUS / 2;
+			startY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * coords[1] - Global.ROCK_SPOT_RADIUS / 2;
 			g.fillOval(startX, startY, Global.ROCK_SPOT_RADIUS, Global.ROCK_SPOT_RADIUS);
 		}
 	}
@@ -212,12 +212,12 @@ public class GameBoard extends JPanel implements MouseListener {
 		int startX, startY, endX, endY;
 
 		for(int i = 0; i < GameState.neighbours.length; i++) {
-			startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0];
-			startY = Global.BOARD_BORDER_Y +  Global.BOARD_SPACING * GameState.coords[i][1];
+			startX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * GameState.coords[i][0];
+			startY = Global.BOARD_DRAW_START_Y +  Global.BOARD_SPACING * GameState.coords[i][1];
 
 			for(int neighboor : GameState.neighbours[i]) {
-				endX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[neighboor][0];
-				endY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[neighboor][1];
+				endX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * GameState.coords[neighboor][0];
+				endY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * GameState.coords[neighboor][1];
 
 				g.drawLine(startX, startY, endX, endY);
 			}
@@ -243,9 +243,9 @@ public class GameBoard extends JPanel implements MouseListener {
 
 		g.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		g.setColor(Global.P1_COLOR);
-		g.drawString(Integer.toString(p1Available), Global.P1_N_AVAILABLE_ROCKS_X - 30, 50);
+		g.drawString(Integer.toString(p1Available), Global.P1_N_AVAILABLE_ROCKS_X - 40, 50);
 		g.setColor(Global.P2_COLOR);
-		g.drawString(Integer.toString(p2Available), Global.P2_N_AVAILABLE_ROCKS_X + 60, 50);
+		g.drawString(Integer.toString(p2Available), Global.P2_N_AVAILABLE_ROCKS_X + 20, 50);
 	}
 
 	public void renderAvailableStonesStones(Graphics g) {
@@ -260,8 +260,8 @@ public class GameBoard extends JPanel implements MouseListener {
 		int startX, startY;
 
 		for(int i = 0; i < game.getBoard().size(); i++) {
-			startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
-			startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
+			startX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * GameState.coords[i][0] - Global.ROCK_RADIUS / 2;
+			startY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * GameState.coords[i][1] - Global.ROCK_RADIUS / 2;
 			if(i == start && storedMove == null) {
 				g.setColor(Global.SELECTED_ROCK_COLOR);
 			}
@@ -281,12 +281,12 @@ public class GameBoard extends JPanel implements MouseListener {
 
 		if(storedMove != null) {
 			if(storedMove.getEnd() == Global.INVALID_INDEX) {
-				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
-				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
+				startX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][0] - Global.ROCK_RADIUS / 2;
+				startY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getStart()][1] - Global.ROCK_RADIUS / 2;
 			}
 			else {
-				startX = Global.BOARD_BORDER_X + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][0] - Global.ROCK_RADIUS / 2;
-				startY = Global.BOARD_BORDER_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][1] - Global.ROCK_RADIUS / 2;
+				startX = Global.BOARD_DRAW_START_X + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][0] - Global.ROCK_RADIUS / 2;
+				startY = Global.BOARD_DRAW_START_Y + Global.BOARD_SPACING * GameState.coords[storedMove.getEnd()][1] - Global.ROCK_RADIUS / 2;
 			}
 
 			if(game.getCurrentPlayer() == Global.maximizerPlayer) {

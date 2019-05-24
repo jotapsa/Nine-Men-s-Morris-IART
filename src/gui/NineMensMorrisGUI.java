@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
 
 import logic.BoardEval;
@@ -28,6 +29,8 @@ public class NineMensMorrisGUI extends JFrame {
 	private JButton hintButton;
 	private JButton aboutButton;
 	private JComboBox gameModeSelector;
+	private JComboBox algorithmPicker;
+	private JComboBox depthPicker;
 	private GameBoard board;
 	private GameState state;
 	private JLabel lblHint;
@@ -67,16 +70,32 @@ public class NineMensMorrisGUI extends JFrame {
 		
 		createHintButton();
 		
+		createAlgorithmPicker();
+		
+		createDepthPicker();
+		
 		createAboutButton();
 
 		createGameModeSelector();
 
 		createGameBoard();
 	}
+	
+	public void createAlgorithmPicker() {
+		algorithmPicker = new JComboBox<Object>(Global.ALGORITHMS);
+		algorithmPicker.setBounds(Global.ALGORITHM_PICKER_START_X, Global.BUTTONS_Y, Global.ALGORITHM_PICKER_WIDTH, Global.BUTTONS_HEIGHT);
+		contentPane.add(algorithmPicker);
+	}
+	
+	public void createDepthPicker() {
+		depthPicker = new JComboBox<Object>(Global.DEPTH_OPTIONS);
+		depthPicker.setBounds(Global.DEPTH_PICKER_START_X, Global.BUTTONS_Y, Global.DEPTH_PICKER_WIDTH, Global.BUTTONS_HEIGHT);
+		contentPane.add(depthPicker);
+	}
 
 	private void createGameBoard() {
 		board = new GameBoard(this);
-		board.setBounds(Global.BOARD_BORDER_X, 50, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
+		board.setBounds(Global.BOARD_START_X, 50, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
 		board.setBackground(Global.BACKGROUND_COLOR);
 		contentPane.add(board);
 	}
@@ -87,7 +106,7 @@ public class NineMensMorrisGUI extends JFrame {
 		contentPane.add(lblGameMode);
 
 		gameModeSelector = new JComboBox<Object>(Global.GAME_MODES);
-		gameModeSelector.setBounds(Global.PICKER_START_X, Global.BUTTONS_Y, Global.PICKER_WIDTH, 25);
+		gameModeSelector.setBounds(Global.PICKER_START_X, Global.BUTTONS_Y, Global.PICKER_WIDTH, Global.BUTTONS_HEIGHT);
 		contentPane.add(gameModeSelector);
 	}
 
