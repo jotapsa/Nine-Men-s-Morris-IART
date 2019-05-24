@@ -9,30 +9,35 @@ public class NineMensMorrisCLI {
     public static void main(String[] args) {
         int answer = 0;
 
-        while (answer != 5) {
+        while (answer != 6) {
             printMainMenu();
-            answer = Global.askInt("Option : ", 1, 5);
+            answer = Global.askInt("Option : ", 1, 6);
 
             switch (answer){
                 case 1:
                     newGame(
-                            new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc,BoardEval::fav1),
-                            new Player(Global.minimizerPlayer)
+                            new Player(Global.maximizerPlayer),
+                            new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1)
                     );
-                    break;
                 case 2:
                     newGame(
-                    		new Player(Global.maximizerPlayer),
+                            new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
                             new Player(Global.minimizerPlayer)
                     );
                     break;
                 case 3:
                     newGame(
+                    		new Player(Global.maximizerPlayer),
+                            new Player(Global.minimizerPlayer)
+                    );
+                    break;
+                case 4:
+                    newGame(
                             new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
                             new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav2)
                     );
                     break;
-                case 4:
+                case 5:
                     printAbout();
                     break;
                 default:
@@ -59,11 +64,12 @@ public class NineMensMorrisCLI {
 
     private static void printMainMenu() {
         System.out.println("\n\n\n---- Main Menu ----");
-        System.out.println("1 - Singleplayer");
-        System.out.println("2 - Multiplayer");
-        System.out.println("3 - Computer vs Computer");
-        System.out.println("4 - About");
-        System.out.println("5 - Exit");
+        System.out.println("1 - Singleplayer - Player vs Computer");
+        System.out.println("2 - Singleplayer - Computer vs Player");
+        System.out.println("3 - Multiplayer");
+        System.out.println("4 - Computer vs Computer");
+        System.out.println("5 - About");
+        System.out.println("6 - Exit");
     }
 
     public static void printBoardStats(GameState gameState) {
