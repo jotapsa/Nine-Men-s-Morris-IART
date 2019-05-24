@@ -21,6 +21,7 @@ import logic.GameState;
 import logic.Move;
 import logic.Player;
 import utilities.Global;
+import utilities.Global.decFunc;
 
 public class NineMensMorrisGUI extends JFrame {
 
@@ -193,6 +194,18 @@ public class NineMensMorrisGUI extends JFrame {
 	public void startNewGame() {
 
 		String option = String.valueOf(gameModeSelector.getSelectedItem());
+		String algorithmOption = String.valueOf(algorithmPicker.getSelectedItem());
+		String depthPickerOtion = String.valueOf(depthPicker.getSelectedItem());
+		decFunc algorithm;
+		int depth;
+		
+		if(algorithmOption.equals("Choose algorithm") || depthPickerOtion.equals("Choose Depth")) {
+			return;
+		}
+		
+		algorithm = algorithmOption.equals("MiniMax") ? Global.decFunc.MiniMax : Global.decFunc.AlphaBeta;
+		
+		depth = Integer.parseInt(depthPickerOtion);
 
 		switch(option) {
 			case "Player vs Player":
@@ -200,12 +213,12 @@ public class NineMensMorrisGUI extends JFrame {
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "Player vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, depth, algorithm, BoardEval::fav1));
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "PC vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
-				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, depth, algorithm, BoardEval::fav1));
+				board.setP2(new Computer(Global.minimizerPlayer, depth, algorithm, BoardEval::fav1));
 				break;
 			default:
 				return;
