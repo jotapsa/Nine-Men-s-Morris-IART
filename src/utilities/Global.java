@@ -20,7 +20,7 @@ public class Global {
 
     public final static int INVALID_INDEX = -1;
 
-    public final static Object[] GAME_MODES = {"Select...", "Player vs Player", "Player vs PC", "PC vs PC"};
+    public final static Object[] GAME_MODES = {"Select...", "Player vs Player", "Player vs PC", "PC vs Player", "PC vs PC"};
     public final static Object[] ALGORITHMS = {"Choose algorithm", "MiniMax", "Alpha-Beta"};
     public final static Object[] DEPTH_OPTIONS = {"Choose Depth", "3", "4", "5", "6", "7"};
   
