@@ -58,16 +58,16 @@ public class NineMensMorrisGUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-		
+
 		createNewGameButton();
-		
+
 		createAboutButton();
-		
+
 		createGameModeSelector();
-		
+
 		createGameBoard();
 	}
-	
+
 	private void createGameBoard() {
 		board = new GameBoard(this);
 		board.setBounds(Global.BOARD_BORDER_X, 50, Global.BOARD_WIDTH, Global.BOARD_HEIGHT);
@@ -79,12 +79,12 @@ public class NineMensMorrisGUI extends JFrame {
 		JLabel lblGameMode = new JLabel("Game Mode");
 		lblGameMode.setBounds(Global.LABEL_START_X, Global.BUTTONS_Y, Global.LABEL_WIDTH, Global.BUTTONS_HEIGHT);
 		contentPane.add(lblGameMode);
-		
+
 		gameModeSelector = new JComboBox<Object>(Global.GAME_MODES);
 		gameModeSelector.setBounds(Global.PICKER_START_X, Global.BUTTONS_Y, Global.PICKER_WIDTH, 25);
 		contentPane.add(gameModeSelector);
 	}
-	
+
 	public void createNewGameButton() {
 		newGameButton = new JButton("Start new game");
 		newGameButton.setSize(Global.START_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
@@ -97,7 +97,7 @@ public class NineMensMorrisGUI extends JFrame {
 		});
 		contentPane.add(newGameButton);
 	}
-	
+
 	public void createAboutButton() {
 		aboutButton = new JButton("About");
 		aboutButton.setSize(Global.ABOUT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
@@ -107,61 +107,61 @@ public class NineMensMorrisGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//JFrame principal
 				JFrame p = (JFrame)aboutButton.getParent().getParent().getParent().getParent();
-				
+
 				JDialog d = new JDialog(p, "About");
-				
+
 				d.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-				
-				d.getContentPane().add(new JLabel("Bernardo Manuel Costa Barbosa - up201503477")); 
-				  
+
+				d.getContentPane().add(new JLabel("Bernardo Manuel Costa Barbosa - up201503477"));
+
 				d.getContentPane().add(new JLabel("Duarte Nuno Andre Carvalho - up201503661"));
-				
+
 				d.getContentPane().add(new JLabel("Joao Pedro Teixeira Pereira de Sa - up201506252"));
-				
+
 				d.getContentPane().add(new JLabel("Artificial Intelligence"));
-				
+
 				d.getContentPane().add(new JLabel("Master in Informatics and Computing Engineering"));
-				
+
 				d.getContentPane().add(new JLabel("Faculty of Engineering  --- University of Porto"));
-				
+
 				d.setLocation(p.getLocation().x + Global.WIDTH/4, p.getLocation().y + Global.HEIGHT/4);
-				
-	            d.setSize(400, 270); 
-	  
-	            d.setVisible(true); 
+
+	            d.setSize(400, 270);
+
+	            d.setVisible(true);
 			}
 		});
 		contentPane.add(aboutButton);
-		
+
 	}
-	
+
 	public void startNewGame() {
-		
+
 		String option = String.valueOf(gameModeSelector.getSelectedItem());
-		
+
 		switch(option) {
 			case "Player vs Player":
 				board.setP1(new Player(Global.maximizerPlayer));
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "Player vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
 				board.setP2(new Player(Global.minimizerPlayer));
-				break;	
+				break;
 			case "PC vs PC":
-				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1));
-				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1));
+				board.setP1(new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1));
+				board.setP2(new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1));
 				break;
 			default:
 				return;
 		}
-		
+
 		state = new GameState();
-		
+
 		board.resetUserOptions();
-		
+
 		board.setGameState(state);
-		
+
 		board.repaint();
 	}
 

@@ -9,20 +9,86 @@ public class Computer extends Player {
 
     private int placingDepth;
     private int depth;
-    private final Function<GameState, Integer> evaluateFunction;
+    private Global.decFunc decFunc;
+    private final Function<GameState, Integer> evalFunc;
 
-    public Computer(int number, int placingDepth, int depth, Function<GameState, Integer> evaluateFunction) {
+    public Computer(int number, int placingDepth, int depth, Global.decFunc decFunc, Function<GameState, Integer> evalFunc) {
         super(number);
 
         this.placingDepth = placingDepth;
         this.depth = depth;
-        this.evaluateFunction = evaluateFunction;
+        this.decFunc = decFunc;
+        this.evalFunc = evalFunc;
     }
 
     @Override
     public Move getMove(GameState gameState) {
         System.out.println("\nComputer " + this.number + " : Playing...\n");
-        return alphaBetaAux(gameState);
+        return computerAux(gameState);
+    }
+
+    private Move computerAux(GameState gameState){
+        ArrayList<GameState> possibleStates = gameState.getPossibleBoards();
+
+        GameState bestState = possibleStates.get(0);
+
+        int bestStateValue, compareStateValue;
+        for(int i=1; i<possibleStates.size(); i++){
+            switch (decFunc){
+                case MiniMax:
+                    bestStateValue = miniMax(
+                            bestState,
+                            depth,
+                            bestState.getCurrentPlayer() == Global.maximizerPlayer
+                    );
+
+                    compareStateValue = miniMax(
+                            possibleStates.get(i),
+                            depth,
+                            bestState.getCurrentPlayer() == Global.maximizerPlayer
+                    );
+                    break;
+                case AlphaBeta:
+                    bestStateValue = alphaBeta(
+                            bestState,
+                            depth,
+                            java.lang.Integer.MIN_VALUE,
+                            Integer.MAX_VALUE,
+                            bestState.getCurrentPlayer() == Global.maximizerPlayer
+                    );
+
+                    compareStateValue = alphaBeta(
+                            possibleStates.get(i),
+                            depth,
+                            java.lang.Integer.MIN_VALUE,
+                            Integer.MAX_VALUE,
+                            possibleStates.get(i).getCurrentPlayer() == Global.maximizerPlayer
+                    );
+                    break;
+                default:
+                    bestStateValue = 0;
+                    compareStateValue = 0;
+                    break;
+            }
+
+
+            switch(this.number){
+                case Global.maximizerPlayer:
+                    if(bestStateValue < compareStateValue){
+                        bestState = possibleStates.get(i);
+                    }
+                    break;
+                case Global.minimizerPlayer:
+                    if(bestStateValue > compareStateValue){
+                        bestState = possibleStates.get(i);
+                    }
+                default:
+                    break;
+            }
+        }
+
+
+        return bestState.getLastMove();
     }
 
     private int alphaBeta(GameState gameState, int depth, int alpha, int beta, boolean maximizerPlayer) {
@@ -62,58 +128,35 @@ public class Computer extends Player {
         }
     }
 
-    private Move alphaBetaAux(GameState gameState){
-        ArrayList<GameState> possibleStates = gameState.getPossibleBoards();
-        int depth;
-        switch (gameState.getCurrentState()){
-            case PLACING:
-                depth = this.placingDepth;
-                break;
-            default:
-                depth = this.depth;
-                break;
+    private int miniMax(GameState gameState, int depth, boolean maximizerPlayer){
+        if(depth == 0 || gameState.isGameOver() != -1){
+            return evaluateGameState(gameState);
         }
 
-        GameState bestState = possibleStates.get(0);
+        ArrayList<GameState> possibleBoards = gameState.getPossibleBoards();
 
-        for(int i=1; i<possibleStates.size(); i++){
-            int bestStateValue = alphaBeta(
-                    bestState,
-                    depth,
-                    java.lang.Integer.MIN_VALUE,
-                    Integer.MAX_VALUE,
-                    bestState.getCurrentPlayer() == Global.maximizerPlayer
-            );
+        int value;
+        if(maximizerPlayer){
+            value = Integer.MIN_VALUE;
 
-            int compareStateValue = alphaBeta(
-                    possibleStates.get(i),
-                    depth,
-                    java.lang.Integer.MIN_VALUE,
-                    Integer.MAX_VALUE,
-                    possibleStates.get(i).getCurrentPlayer() == Global.maximizerPlayer
-            );
-
-            switch(this.number){
-                case Global.maximizerPlayer:
-                    if(bestStateValue < compareStateValue){
-                        bestState = possibleStates.get(i);
-                    }
-                    break;
-                case Global.minimizerPlayer:
-                    if(bestStateValue > compareStateValue){
-                        bestState = possibleStates.get(i);
-                    }
-                default:
-                    break;
+            for(GameState possibleBoard : possibleBoards){
+                value = Math.max(value, miniMax(possibleBoard, depth -1, false));
             }
-        }
 
-        return bestState.getLastMove();
+            return value;
+        } else{
+            value = Integer.MAX_VALUE;
+
+            for(GameState possibleBoard : possibleBoards){
+                value = Math.min(value, miniMax(possibleBoard, depth -1, true));
+            }
+
+            return value;
+        }
     }
 
-
     private int evaluateGameState(GameState gameState) {
-        return evaluateFunction.apply(gameState);
+        return evalFunc.apply(gameState);
     }
 
 }

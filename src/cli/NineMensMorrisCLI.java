@@ -1,11 +1,8 @@
 package cli;
 
 import cli.GameView;
-import logic.Computer;
-import logic.GameState;
-import logic.Player;
+import logic.*;
 import utilities.Global;
-import logic.BoardEval;
 
 public class NineMensMorrisCLI {
 
@@ -19,7 +16,7 @@ public class NineMensMorrisCLI {
             switch (answer){
                 case 1:
                     newGame(
-                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1),
+                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc,BoardEval::fav1),
                             new Player(Global.minimizerPlayer)
                     );
                     break;
@@ -31,8 +28,8 @@ public class NineMensMorrisCLI {
                     break;
                 case 3:
                     newGame(
-                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1),
-                            new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, BoardEval::fav1)
+                            new Computer(Global.maximizerPlayer, Global.pc1PlacingDepth, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
+                            new Computer(Global.minimizerPlayer, Global.pc2PlacingDepth, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1)
                     );
                     break;
                 case 4:

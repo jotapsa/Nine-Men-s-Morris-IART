@@ -6,12 +6,20 @@ import java.util.Scanner;
 
 public class Global {
 
+    public enum decFunc {
+        MiniMax,
+        AlphaBeta
+    }
+
     public final static int maximizerPlayer = 1;
     public final static int minimizerPlayer = 2;
     public final static int pc1PlacingDepth = 3;
     public final static int pc2PlacingDepth = 3;
     public final static int pc1Depth = 5;
     public final static int pc2Depth = 5;
+    public final static decFunc pc1DecFunc = decFunc.AlphaBeta;
+    public final static decFunc pc2DecFunc = decFunc.AlphaBeta;
+
     public final static int INVALID_INDEX = -1;
 
     public final static Object[] GAME_MODES = {"Select...", "Player vs Player", "Player vs PC", "PC vs PC"};
