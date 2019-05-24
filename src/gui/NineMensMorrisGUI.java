@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import logic.BoardEval;
 import logic.Computer;
 import logic.GameState;
+import logic.Move;
 import logic.Player;
 import utilities.Global;
 
@@ -24,10 +25,13 @@ public class NineMensMorrisGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JButton newGameButton;
+	private JButton hintButton;
 	private JButton aboutButton;
 	private JComboBox gameModeSelector;
 	private GameBoard board;
 	private GameState state;
+	private JLabel lblHint;
+	
 
 	/**
 	 * Launch the application.
@@ -60,7 +64,9 @@ public class NineMensMorrisGUI extends JFrame {
 		setContentPane(contentPane);
 
 		createNewGameButton();
-
+		
+		createHintButton();
+		
 		createAboutButton();
 
 		createGameModeSelector();
@@ -97,7 +103,37 @@ public class NineMensMorrisGUI extends JFrame {
 		});
 		contentPane.add(newGameButton);
 	}
-
+	
+	public void createHintButton() {
+		hintButton = new JButton("HINT");
+		hintButton.setSize(Global.HINT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
+		hintButton.setLocation(Global.HINT_BUTTON_X, Global.BUTTONS_Y);
+		
+		lblHint = new JLabel("");
+		lblHint.setSize(Global.HINT_LABEL_WIDTH, Global.BUTTONS_HEIGHT);
+		lblHint.setLocation(Global.HINT_LABEL_X, Global.BUTTONS_Y);
+		
+		hintButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showHint();
+			}
+		});
+		
+		contentPane.add(hintButton);
+		contentPane.add(lblHint);
+	}
+	
+	public void showHint() {
+		Move m = null;
+		
+		if(state != null) {
+			m = state.giveHint(state);
+			
+			lblHint.setText(m.toString());
+		}
+	}
+	
 	public void createAboutButton() {
 		aboutButton = new JButton("About");
 		aboutButton.setSize(Global.ABOUT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);

@@ -50,10 +50,17 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{" +
-                "start=" + start +
-                ", end=" + end +
-                ", taken=" + taken +
-                '}';
+    	
+    	String toReturn = Integer.toString(start);
+    	
+    	if(end != Global.INVALID_INDEX) {
+    		toReturn += " -> " + end;
+    		
+    		if(taken != Global.INVALID_INDEX) {
+    			toReturn = " take " + taken;
+    		}
+    	}
+    	
+        return toReturn;
     }
 }

@@ -76,14 +76,22 @@ public class Global {
     public final static int START_BUTTON_X = ABOUT_BUTTON_X - START_BUTTON_WIDTH - BUTTONS_SPACING;
 
 //   GAME MODE PICKER
-    public final static int PICKER_WIDTH = 130;
+    public final static int PICKER_WIDTH = 150;
     public final static int PICKER_START_X = START_BUTTON_X - PICKER_WIDTH - BUTTONS_SPACING;
-
-//  GAME MODE PICKER LABEL
+    
+//   GAME MODE PICKER LABEL
     public final static int LABEL_WIDTH = 76;
     public final static int LABEL_START_X = PICKER_START_X - LABEL_WIDTH - BUTTONS_SPACING / 4;
-
-
+      
+//    HINT BUTTON
+    public final static int HINT_BUTTON_WIDTH = Global.START_BUTTON_WIDTH - 50;
+    public final static int HINT_BUTTON_X = BOARD_START_X;
+    
+//    HINT LABEL
+    public final static int HINT_LABEL_WIDTH = 50;
+    public final static int HINT_LABEL_X = HINT_BUTTON_X + HINT_BUTTON_WIDTH + BUTTONS_SPACING/3;
+    
+    
     private static Scanner s = new Scanner(System.in);
 
     public static int askInt(String description, int min, int max){

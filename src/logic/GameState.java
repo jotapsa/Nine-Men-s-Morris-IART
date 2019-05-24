@@ -12,11 +12,10 @@ public class GameState {
     private static final int PLAYER_1 = 1;
     private static final int PLAYER_2 = 2;
 
-
-
     public enum State {
         PLACING, MOVING, FLYING;
     }
+    
     public static Integer[][] neighbours = {
             {1, 9},
             {0, 2, 4},
@@ -337,6 +336,17 @@ public class GameState {
         }
 
         return n;
+    }
+    
+    public Move giveHint(GameState g) {
+    	Move toReturn = null;
+    	GameState aux = new GameState(g);
+    	Computer auxPlayer = new Computer(aux.currentPlayer, Global.pc1PlacingDepth, Global.pc1Depth, BoardEval::fav1);
+    	
+    	toReturn = auxPlayer.getMove(aux);
+    	
+    	
+    	return toReturn;
     }
 
     public boolean moveCausesMill(Move move){
