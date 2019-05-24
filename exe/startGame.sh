@@ -1,0 +1,1 @@
+java -jar Nine-Mens-Morris.jar
