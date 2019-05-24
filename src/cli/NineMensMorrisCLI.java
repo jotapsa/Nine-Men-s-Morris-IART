@@ -29,7 +29,7 @@ public class NineMensMorrisCLI {
                 case 3:
                     newGame(
                             new Computer(Global.maximizerPlayer, Global.pc1Depth, Global.pc1DecFunc, BoardEval::fav1),
-                            new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav1)
+                            new Computer(Global.minimizerPlayer, Global.pc2Depth, Global.pc2DecFunc, BoardEval::fav2)
                     );
                     break;
                 case 4:

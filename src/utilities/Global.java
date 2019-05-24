@@ -13,10 +13,10 @@ public class Global {
 
     public final static int maximizerPlayer = 1;
     public final static int minimizerPlayer = 2;
-    public final static int pc1Depth = 5;
-    public final static int pc2Depth = 5;
-    public final static decFunc pc1DecFunc = decFunc.AlphaBeta;
-    public final static decFunc pc2DecFunc = decFunc.AlphaBeta;
+    public final static int pc1Depth = 3;
+    public final static int pc2Depth = 3;
+    public final static decFunc pc1DecFunc = decFunc.MiniMax;
+    public final static decFunc pc2DecFunc = decFunc.MiniMax;
 
     public final static int INVALID_INDEX = -1;
 

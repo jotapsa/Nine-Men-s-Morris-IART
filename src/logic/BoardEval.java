@@ -28,6 +28,18 @@ public class BoardEval {
         return value;
     }
 
+    public static int fav2 (GameState gameState) {
+        int value=0;
+
+        value += evaluatePossibleMovingMoves(gameState);
+        value += evaluateNumberOfPieces(gameState) * 2;
+        value += evaluateGameOver(gameState);
+        value += randomComponent();
+
+
+        return value;
+    }
+
     public static int evaluatePossibleMovingMoves(GameState gameState) {
         int value=0;
         ArrayList<Integer> board = gameState.getBoard();
