@@ -11,7 +11,6 @@ public class BoardEval {
     private final static int drawPoints = 25000;
     private final static int piecePoints = 2000;
     private final static int placementPoints = 50;
-    private final static int movePoints = 500;
     private final static int openMovePoints = 50;
 
 

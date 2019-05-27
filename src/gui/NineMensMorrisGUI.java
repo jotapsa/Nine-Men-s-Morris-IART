@@ -35,7 +35,7 @@ public class NineMensMorrisGUI extends JFrame {
 	private GameBoard board;
 	private GameState state;
 	private JLabel lblHint;
-	
+
 
 	/**
 	 * Launch the application.
@@ -68,26 +68,26 @@ public class NineMensMorrisGUI extends JFrame {
 		setContentPane(contentPane);
 
 		createNewGameButton();
-		
+
 		createHintButton();
-		
+
 		createAlgorithmPicker();
-		
+
 		createDepthPicker();
-		
+
 		createAboutButton();
 
 		createGameModeSelector();
 
 		createGameBoard();
 	}
-	
+
 	public void createAlgorithmPicker() {
 		algorithmPicker = new JComboBox<Object>(Global.ALGORITHMS);
 		algorithmPicker.setBounds(Global.ALGORITHM_PICKER_START_X, Global.BUTTONS_Y, Global.ALGORITHM_PICKER_WIDTH, Global.BUTTONS_HEIGHT);
 		contentPane.add(algorithmPicker);
 	}
-	
+
 	public void createDepthPicker() {
 		depthPicker = new JComboBox<Object>(Global.DEPTH_OPTIONS);
 		depthPicker.setBounds(Global.DEPTH_PICKER_START_X, Global.BUTTONS_Y, Global.DEPTH_PICKER_WIDTH, Global.BUTTONS_HEIGHT);
@@ -123,37 +123,37 @@ public class NineMensMorrisGUI extends JFrame {
 		});
 		contentPane.add(newGameButton);
 	}
-	
+
 	public void createHintButton() {
 		hintButton = new JButton("HINT");
 		hintButton.setSize(Global.HINT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
 		hintButton.setLocation(Global.HINT_BUTTON_X, Global.BUTTONS_Y);
-		
+
 		lblHint = new JLabel("");
 		lblHint.setSize(Global.HINT_LABEL_WIDTH, Global.BUTTONS_HEIGHT);
 		lblHint.setLocation(Global.HINT_LABEL_X, Global.BUTTONS_Y);
-		
+
 		hintButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showHint();
 			}
 		});
-		
+
 		contentPane.add(hintButton);
 		contentPane.add(lblHint);
 	}
-	
+
 	public void showHint() {
 		Move m = null;
-		
+
 		if(state != null) {
 			m = state.giveHint(state);
-			
+
 			lblHint.setText(m.toString());
 		}
 	}
-	
+
 	public void createAboutButton() {
 		aboutButton = new JButton("About");
 		aboutButton.setSize(Global.ABOUT_BUTTON_WIDTH, Global.BUTTONS_HEIGHT);
@@ -198,13 +198,13 @@ public class NineMensMorrisGUI extends JFrame {
 		String depthPickerOtion = String.valueOf(depthPicker.getSelectedItem());
 		decFunc algorithm;
 		int depth;
-		
+
 		if(algorithmOption.equals("Choose algorithm") || depthPickerOtion.equals("Choose Depth")) {
 			return;
 		}
-		
+
 		algorithm = algorithmOption.equals("MiniMax") ? Global.decFunc.MiniMax : Global.decFunc.AlphaBeta;
-		
+
 		depth = Integer.parseInt(depthPickerOtion);
 
 		switch(option) {
@@ -213,8 +213,8 @@ public class NineMensMorrisGUI extends JFrame {
 				board.setP2(new Player(Global.minimizerPlayer));
 				break;
 			case "Player vs PC":
-				board.setP1(new Player(Global.minimizerPlayer));
-				board.setP2(new Computer(Global.maximizerPlayer, depth, algorithm, BoardEval::fav1));
+				board.setP1(new Player(Global.maximizerPlayer));
+				board.setP2(new Computer(Global.minimizerPlayer, depth, algorithm, BoardEval::fav1));
 				break;
 			case "PC vs Player":
 				board.setP1(new Computer(Global.maximizerPlayer, depth, algorithm, BoardEval::fav1));
